@@ -1,9 +1,8 @@
 package com.example.leavetracker.Services;
 
-import com.example.hashedin.leavetracker.hu16javaleavetracker.enums.LeaveStatus;
-import com.example.hashedin.leavetracker.hu16javaleavetracker.enums.LeaveType;
-import com.example.hashedin.leavetracker.hu16javaleavetracker.models.Leave;
-import com.example.hashedin.leavetracker.hu16javaleavetracker.repo.LeaveRepo;
+import com.example.leavetracker.Enums.LeaveStatus;
+import com.example.leavetracker.Models.Leave;
+import com.example.leavetracker.Repo.LeaveRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

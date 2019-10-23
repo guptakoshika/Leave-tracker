@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class LeaveServiceImpl {
+public class LeaveServiceImpl implements LeaveService {
 
     Logger logger = LoggerFactory.getLogger(LeaveServiceImpl.class);
 

@@ -43,8 +43,7 @@ public class Employee implements Serializable {
     private Set<Leave> leaves = new HashSet<>();
 
     /*** constructors */
-    public Employee() {
-    }
+    public Employee() {}
 
     /*** getters */
     public int getEmployeeId() {

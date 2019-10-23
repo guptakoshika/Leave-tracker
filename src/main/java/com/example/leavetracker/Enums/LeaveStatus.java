@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 @JsonFormat
 public enum LeaveStatus {
-    APPLIED, CANCELED, APPROVED, INPROGRESS;
+    APPLIED, CANCELED, APPROVED, IN_PROGRESS;
 
     @JsonGetter
     public String toString() {

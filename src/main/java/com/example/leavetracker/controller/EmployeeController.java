@@ -14,23 +14,23 @@ public class EmployeeController {
     @Autowired
     private EmployeeServices employeeService;
 
-    @GetMapping(value = "/employee")
+    @GetMapping(value = "")
     public ResponseEntity getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping(value = "/employee/{empId}")
+    @GetMapping(value = "/{empId}")
     public ResponseEntity fetchEmployee(@PathVariable int empId) {
         return employeeService.getAllEmployees();
     }
 
-    @PostMapping(value = "/employee")
+    @PostMapping(value = "")
     public HttpStatus employee(@RequestBody Employee employee) {
         employeeService.saveEmployee(employee);
         return HttpStatus.ACCEPTED;
     }
 
-    @DeleteMapping(value = "/employee/{id}")
+    @DeleteMapping(value = "/{id}")
     public HttpStatus deleteEmployee(@PathVariable int id) {
         return employeeService.deleteEmployee(id);
     }

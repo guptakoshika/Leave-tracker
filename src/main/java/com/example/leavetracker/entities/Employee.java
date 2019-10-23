@@ -1,6 +1,7 @@
 package com.example.leavetracker.entities;
 
 import com.example.leavetracker.enums.Gender;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,79 +13,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "employee")
+@Data
 public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EmployeeId")
+    @Column(name = "employee_id")
     private int employeeId;
 
-    @Column(name = "EmpName")
+    @Column(name = "employee_name")
+    @NotNull
     private String employeeName;
 
-    @Column(name = "EmployeeGender", nullable = false)
+    @Column(name = "employee_gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "JoiningDate", nullable = false)
+    @Column(name = "joining_date", nullable = false)
     private LocalDate joiningDate;
 
-    @Column(name = "leaveBalance", nullable = false)
+    @Column(name = "leave_balance", nullable = false)
     private int leaveBalance;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "EmployeeId")
+    @JoinColumn(name = "employee_id")
     private Set<Leave> leaves = new HashSet<>();
-
-    /*** constructors */
-    public Employee() {}
-
-    /*** getters */
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public LocalDate getJoiningDate() {
-        return joiningDate;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public Set<Leave> getLeaves() {
-        return leaves;
-    }
-
-    public int getLeaveBalance() {
-        return leaveBalance;
-    }
-
-    /*** setters */
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public void setGender(String gender){
-            if(isValidGender(gender))
-              this.gender = Gender.valueOf(gender);
-            else
-                this.gender = Gender.NOT_DEFINED;
-    }
 
     public void setJoiningDate(String joiningDate) throws Exception {
         if(isValidDate(joiningDate)) {
@@ -99,23 +59,6 @@ public class Employee implements Serializable {
             throw new Exception("invalid date!");
     }
 
-    public void setLeaves(Set<Leave> leaves) {
-        this.leaves = leaves;
-    }
-
-    public void setLeaveBalance(int leaveBalance) {
-        this.leaveBalance = leaveBalance;
-    }
-
-    public String toString() {
-        return this.getEmployeeName() + " " + this.getEmployeeId()
-                + " " + this.getJoiningDate() + " " + this.getGender();
-    }
-    public boolean isValidGender(String gender){
-        if(gender.equals(Gender.FEMALE) || gender.equals(Gender.MALE))
-            return true;
-        return false;
-    }
     public boolean isValidDate(String joiningDate){
         if(LocalDate.parse(joiningDate).isBefore(LocalDate.parse("2019-08-01")))
         {

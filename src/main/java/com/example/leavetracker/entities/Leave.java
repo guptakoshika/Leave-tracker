@@ -2,6 +2,7 @@ package com.example.leavetracker.entities;
 
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,11 +12,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
+@Data
 public class Leave implements Serializable {
 
     @Id
@@ -26,70 +29,22 @@ public class Leave implements Serializable {
     @Column(name = "Reason")
     private String reason;
 
-    @Column(name = "type")
+    @Column(name = "leave_type")
     @Enumerated(EnumType.STRING)
+    @NotNull
     private LeaveType leaveType;
 
-    @Column(name = "leaveStart")
-    private LocalDate leaveStart;
+    @Column(name = "leave_start_date")
+    @NotNull
+    private LocalDate leaveStartDate;
 
-    @Column(name = "LeaveEnd")
-    private LocalDate leaveEnd;
+    @Column(name = "Leave_end_date")
+    @NotNull
+    private LocalDate leaveEndDate;
 
-    @Column(name = "leaveStatus")
+    @Column(name = "leave_status")
     private LeaveStatus leaveStatus;
 
     @ManyToOne
     private Employee employee;
-
-    /*** getters and setters */
-    public int getId() {
-        return id;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public LeaveType getLeaveType() {
-        return leaveType;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public LocalDate getLeaveStart() {
-        return leaveStart;
-    }
-
-    public LocalDate getLeaveEnd() {
-        return leaveEnd;
-    }
-
-
-    public LeaveStatus getLeaveStatus() {
-        return leaveStatus;
-    }
-
-    /*** setters */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
-    public void setLeaveStatus(LeaveStatus leaveStatus) {
-        this.leaveStatus = leaveStatus;
-    }
-
-    public void setLeaveType(LeaveType leaveType) {
-        this.leaveType = leaveType;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
 }

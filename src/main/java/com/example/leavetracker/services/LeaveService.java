@@ -2,7 +2,7 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.entities.Leave;
-import com.example.leavetracker.repository.LeaveRepo;
+import com.example.leavetracker.repository.LeaveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,15 @@ public class LeaveService {
 
     Logger logger = LoggerFactory.getLogger(LeaveService.class);
 
-    @Autowired
-    LeaveRepo leaveRepo;
 
-    /***
+    private LeaveRepository leaveRepository;
+
+    @Autowired
+    public LeaveService (LeaveRepository leaveRepository){
+        this.leaveRepository = leaveRepository;
+    }
+
+    /**
      *this method is used to make a leave request and save
      * it to db
      * @param leave: Leave class object.
@@ -29,7 +34,7 @@ public class LeaveService {
      */
     public HttpStatus applyLeave(Leave leave) {
         try {
-            leaveRepo.save(leave);
+            leaveRepository.save(leave);
             leave.getEmployee().setLeaveBalance(leave.getEmployee().getLeaveBalance() - 1);
             leave.setLeaveStatus(LeaveStatus.APPLIED);
             return HttpStatus.OK;
@@ -39,15 +44,15 @@ public class LeaveService {
         }
     }
 
-    /***
+    /**
      *this method is used to get all the leaves applied by the employee.
      * @param empIdPassed:id of the employee
      * @return List of all the leaves associated with the employee.
      */
     public ResponseEntity getLeave(int empIdPassed) {
         try {
-            if (leaveRepo.existsById(empIdPassed)) {
-                return new ResponseEntity(leaveRepo.findAllById(Collections.singleton(empIdPassed)), HttpStatus.OK);
+            if (leaveRepository.existsById(empIdPassed)) {
+                return new ResponseEntity(leaveRepository.findAllById(Collections.singleton(empIdPassed)), HttpStatus.OK);
             } else {
                 throw new Exception("data not found");
             }
@@ -57,16 +62,16 @@ public class LeaveService {
         }
     }
 
-    /***
+    /**
      *this method is used to get leave by id.
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
     public ResponseEntity getLeaveById(int leaveID) {
         try{
-            if(leaveRepo.existsById(leaveID))
+            if(leaveRepository.existsById(leaveID))
             {
-                return new ResponseEntity(leaveRepo.findById(leaveID),HttpStatus.OK);
+                return new ResponseEntity(leaveRepository.findById(leaveID),HttpStatus.OK);
             }
             else
             {

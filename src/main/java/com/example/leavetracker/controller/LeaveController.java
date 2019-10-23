@@ -19,17 +19,17 @@ public class LeaveController {
     @Autowired
     private LeaveService leaveService;
 
-    @GetMapping(value = "/leave/{empId}")
+    @GetMapping(value = "/{empId}")
     public ResponseEntity getLeavesByEmpId(@PathVariable int empId) {
         return leaveService.getLeave(empId);
     }
 
-    @GetMapping(value = "/leave/{leaveId}")
+    @GetMapping(value = "/{leaveId}")
     public ResponseEntity getLeaves(@PathVariable int leaveId) {
         return leaveService.getLeave(leaveId);
     }
 
-    @PostMapping(value = "/applyLeave/{empId}")
+    @PostMapping(value = "/{empId}")
     public HttpStatus applyLeave(@RequestBody Leave leave) {
         return leaveService.applyLeave(leave);
     }

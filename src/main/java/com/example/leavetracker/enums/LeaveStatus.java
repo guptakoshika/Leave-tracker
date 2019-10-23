@@ -1,4 +1,4 @@
-package com.example.leavetracker.Enums;
+package com.example.leavetracker.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;

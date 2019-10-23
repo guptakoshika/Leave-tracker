@@ -1,6 +1,6 @@
-package com.example.leavetracker.Models;
+package com.example.leavetracker.entities;
 
-import com.example.leavetracker.Enums.Gender;
+import com.example.leavetracker.enums.Gender;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

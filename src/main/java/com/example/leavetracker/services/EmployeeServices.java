@@ -1,7 +1,7 @@
-package com.example.leavetracker.Services;
+package com.example.leavetracker.services;
 
-import com.example.leavetracker.Models.Employee;
-import com.example.leavetracker.Repo.EmployeeRepo;
+import com.example.leavetracker.entities.Employee;
+import com.example.leavetracker.repository.EmployeeRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

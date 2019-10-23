@@ -1,7 +1,7 @@
-package com.example.leavetracker.Models;
+package com.example.leavetracker.entities;
 
-import com.example.leavetracker.Enums.LeaveStatus;
-import com.example.leavetracker.Enums.LeaveType;
+import com.example.leavetracker.enums.LeaveStatus;
+import com.example.leavetracker.enums.LeaveType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

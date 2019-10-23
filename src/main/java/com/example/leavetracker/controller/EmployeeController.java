@@ -1,7 +1,7 @@
 package com.example.leavetracker.controller;
 
-import com.example.leavetracker.entities.Employee;
-import com.example.leavetracker.services.EmployeeServices;
+import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.services.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
 
     @Autowired
-    private EmployeeServices employeeService;
+    private EmployeeServiceImpl employeeService;
 
     @GetMapping(value = "")
     public ResponseEntity getAllEmployees() {
@@ -25,8 +25,8 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "")
-    public HttpStatus employee(@RequestBody Employee employee) {
-        employeeService.saveEmployee(employee);
+    public HttpStatus employee(@RequestBody EmployeeRequestModel employeeRequestModel) {
+        employeeService.saveEmployee(employeeRequestModel);
         return HttpStatus.ACCEPTED;
     }
 

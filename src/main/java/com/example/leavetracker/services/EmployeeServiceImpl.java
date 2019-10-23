@@ -1,6 +1,6 @@
 package com.example.leavetracker.services;
 
-import com.example.leavetracker.entities.Employee;
+import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,23 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployeeServices {
+public class EmployeeServiceImpl {
 
 
     private EmployeeRepository employeeRepository;
 
-    Logger logger = LoggerFactory.getLogger(EmployeeServices.class);
+    Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Autowired
-    public EmployeeServices(EmployeeRepository employeeRepository){ this.employeeRepository = employeeRepository; }
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository){ this.employeeRepository = employeeRepository; }
     /***
      * This method is used to save employee locally via Employee Object
-     * @param employee: Accepts an employee object
+     * @param employeeRequestModel: Accepts an employee object
      * @returns Response Entity: Returns Http status.
      */
-    public HttpStatus saveEmployee(Employee employee) {
+    public HttpStatus saveEmployee(EmployeeRequestModel employeeRequestModel) {
         try {
-            employeeRepository.save(employee);
+            //employeeRepository.save(employeeRequestModel);
             return HttpStatus.ACCEPTED;
         } catch (Exception ex) {
             logger.info(ex.getMessage());

@@ -1,7 +1,7 @@
 package com.example.leavetracker.controller;
 
-import com.example.leavetracker.entities.Leave;
-import com.example.leavetracker.services.LeaveService;
+import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.services.LeaveServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class LeaveController {
     Logger logger = LoggerFactory.getLogger(Controller.class);
 
     @Autowired
-    private LeaveService leaveService;
+    private LeaveServiceImpl leaveService;
 
     @GetMapping(value = "/{empId}")
     public ResponseEntity getLeavesByEmpId(@PathVariable int empId) {
@@ -30,7 +30,7 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/{empId}")
-    public HttpStatus applyLeave(@RequestBody Leave leave) {
-        return leaveService.applyLeave(leave);
+    public HttpStatus applyLeave(@RequestBody LeaveRequestModel leaveRequestModel) {
+        return leaveService.applyLeave(leaveRequestModel);
     }
 }

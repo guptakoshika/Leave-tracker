@@ -46,28 +46,4 @@ public class Employee implements Serializable {
     @JoinColumn(name = "employee_id")
     private Set<Leave> leaves = new HashSet<>();
 
-    public void setJoiningDate(String joiningDate) throws Exception {
-        if(isValidDate(joiningDate)) {
-            this.joiningDate = LocalDate.parse(joiningDate);
-
-            if (this.joiningDate.getDayOfMonth() == 1)
-                this.leaveBalance = 2;
-            else
-                this.leaveBalance = 1;
-        }
-        else
-            throw new Exception("invalid date!");
-    }
-
-    public boolean isValidDate(String joiningDate){
-        if(LocalDate.parse(joiningDate).isBefore(LocalDate.parse("2019-08-01")))
-        {
-            return false;
-        }
-        else if (LocalDate.parse(joiningDate).isBefore(LocalDate.parse("2019-08-31")))
-        {
-            return false;
-        }
-        return true;
-    }
 }

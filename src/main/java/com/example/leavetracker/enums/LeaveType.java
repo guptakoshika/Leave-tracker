@@ -1,14 +1,18 @@
 package com.example.leavetracker.enums;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
 
-@JsonFormat
 public enum LeaveType {
-    MATERNITY, PATERNITY, SABBATICAL;
+    MATERNITY("MATERNITY"),
+    PATERNITY("PATERNITY"),
+    SABBATICAL("SABATICAL");
 
-    @JsonGetter
+    private final String value;
+
+    private LeaveType(String value) {
+        this.value = value;
+    }
+
     public String toString() {
-        return this.name();
+        return value;
     }
 }

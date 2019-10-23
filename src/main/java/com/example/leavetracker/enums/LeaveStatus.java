@@ -1,14 +1,20 @@
 package com.example.leavetracker.enums;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
 
-@JsonFormat
 public enum LeaveStatus {
-    APPLIED, CANCELED, APPROVED, IN_PROGRESS;
 
-    @JsonGetter
+    APPLIED("APPLIED"),
+    CANCELLED("CANCELLED"),
+    APPROVED("APPROVED"),
+    IN_PROGRESS("IN PROGRESS");
+
+    private final String value;
+
+    private LeaveStatus(String value) {
+        this.value = value;
+    }
+
     public String toString() {
-        return this.name();
+        return value;
     }
 }

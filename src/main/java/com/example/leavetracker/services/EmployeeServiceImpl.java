@@ -1,7 +1,7 @@
-package com.example.leavetracker.Services;
+package com.example.leavetracker.services;
 
-import com.example.leavetracker.Models.Employee;
-import com.example.leavetracker.Repo.EmployeeRepo;
+import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,22 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployeeServices {
+public class EmployeeServiceImpl implements EmployeeService {
+
+
+    private EmployeeRepository employeeRepository;
+
+    Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Autowired
-    private EmployeeRepo empRepo;
-
-    Logger logger = LoggerFactory.getLogger(EmployeeServices.class);
-
-
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository){ this.employeeRepository = employeeRepository; }
     /***
      * This method is used to save employee locally via Employee Object
-     * @param employee: Accepts an employee object
+     * @param employeeRequestModel: Accepts an employee object
      * @returns Response Entity: Returns Http status.
      */
-    public HttpStatus saveEmployee(Employee employee) {
+    public HttpStatus saveEmployee(EmployeeRequestModel employeeRequestModel) {
         try {
-            empRepo.save(employee);
+            //employeeRepository.save(employeeRequestModel);
             return HttpStatus.ACCEPTED;
         } catch (Exception ex) {
             logger.info(ex.getMessage());
@@ -40,8 +41,8 @@ public class EmployeeServices {
      */
     public ResponseEntity fetchEmployee(int empIdPassed) throws Exception {
         try {
-            if (empRepo.existsById(empIdPassed))
-                return new ResponseEntity(empRepo.findById(empIdPassed), HttpStatus.OK);
+            if (employeeRepository.existsById(empIdPassed))
+                return new ResponseEntity(employeeRepository.findById(empIdPassed), HttpStatus.OK);
             else
                 throw new Exception("employee not found");
 
@@ -57,7 +58,7 @@ public class EmployeeServices {
      */
     public ResponseEntity getAllEmployees() {
         try {
-            return new ResponseEntity(empRepo.findAll(), HttpStatus.OK);
+            return new ResponseEntity(employeeRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             logger.info(e.getMessage());
             return new ResponseEntity(HttpStatus.REQUEST_TIMEOUT);
@@ -71,8 +72,8 @@ public class EmployeeServices {
      */
     public HttpStatus deleteEmployee(int employeeIdPassed) {
         try {
-            if (empRepo.existsById(employeeIdPassed)) {
-                empRepo.deleteById(employeeIdPassed);
+            if (employeeRepository.existsById(employeeIdPassed)) {
+                employeeRepository.deleteById(employeeIdPassed);
                 return HttpStatus.OK;
             } else
                 throw new Exception("employee doesn't exists");

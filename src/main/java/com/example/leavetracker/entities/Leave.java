@@ -24,7 +24,7 @@ public class Leave implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    private int id;
+    private Integer id;
 
     @Column(name = "Reason")
     private String reason;

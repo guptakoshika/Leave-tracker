@@ -7,11 +7,7 @@ import javax.validation.constraints.NotNull;
 public class EmployeeRequestModel {
 
     @NotNull
-    private String firstName;
-
-
-    @NotNull
-    private String lastName;
+    private String name;
 
     @NotNull
     private String joiningDate;

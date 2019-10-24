@@ -1,6 +1,9 @@
 package com.example.leavetracker.services;
 
+import com.example.leavetracker.Constants;
+import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,16 +24,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeServiceImpl(EmployeeRepository employeeRepository){ this.employeeRepository = employeeRepository; }
     /***
      * This method is used to save employee locally via Employee Object
-     * @param employeeRequestModel: Accepts an employee object
+     * @param employeeRequestModel : Accepts an employee object
      * @returns Response Entity: Returns Http status.
      */
-    public HttpStatus saveEmployee(EmployeeRequestModel employeeRequestModel) {
+    public ResponseModel saveEmployee(EmployeeRequestModel employeeRequestModel) {
         try {
-            //employeeRepository.save(employeeRequestModel);
-            return HttpStatus.ACCEPTED;
+            Employee newEmployee = new Employee();
+            newEmployee = getNewEmployeeObj(employeeRequestModel);
+            employeeRepository.save(newEmployee);
+            return new ResponseModel(Constants.STATUS_SUCCESS , Constants.EMP_ADDED_SUCCESS , newEmployee , null);
         } catch (Exception ex) {
             logger.info(ex.getMessage());
-            return HttpStatus.ALREADY_REPORTED;
+            return new ResponseModel(Constants.STATUS_FAILED , Constants.EMP_ADDED_SUCCESS , null , ex);
         }
     }
 
@@ -81,5 +86,14 @@ public class EmployeeServiceImpl implements EmployeeService {
             logger.info(e.getMessage());
             return HttpStatus.BAD_REQUEST;
         }
+    }
+
+    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel){
+        Employee emp = new Employee();
+        if(employeeRequestModel.getName() != null && employeeRequestModel.getName() != ""){
+                emp.setEmployeeName(employeeRequestModel.getName());
+                return emp;
+        }
+        return null;
     }
 }

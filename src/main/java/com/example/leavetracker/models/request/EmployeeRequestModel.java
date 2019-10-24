@@ -9,7 +9,6 @@ public class EmployeeRequestModel {
     @NotNull
     private String firstName;
 
-
     @NotNull
     private String lastName;
 

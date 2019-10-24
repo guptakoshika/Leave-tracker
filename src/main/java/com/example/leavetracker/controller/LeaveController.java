@@ -32,7 +32,7 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/{empId}")
-    public HttpStatus applyLeave(@Valid @RequestBody LeaveRequestModel leaveRequestModel) {
+    public HttpStatus applyLeave(@PathVariable Long empId , @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
         return leaveService.applyLeave(leaveRequestModel);
     }
 }

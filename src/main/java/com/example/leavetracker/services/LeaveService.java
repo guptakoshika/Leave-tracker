@@ -13,19 +13,19 @@ public interface LeaveService {
          * @return HttpStatus : will return ok if done else
          * error will reported to logs.
          */
-        public HttpStatus applyLeave(LeaveRequestModel leaveRequestModel);
+        HttpStatus applyLeave(LeaveRequestModel leaveRequestModel);
 
         /**
          *this method is used to get all the leaves applied by the employee.
          * @param empIdPassed:id of the employee
          * @return List of all the leaves associated with the employee.
          */
-        public ResponseEntity getLeave(int empIdPassed);
+        ResponseEntity getLeave(int empIdPassed);
 
         /**
          *this method is used to get leave by id.
          * @param leaveID : id associated with the leave.
          * @return ResponseEntity object containing leave and http response.
          */
-        public ResponseEntity getLeaveById(int leaveID);
+        ResponseEntity getLeaveById(int leaveID);
 }

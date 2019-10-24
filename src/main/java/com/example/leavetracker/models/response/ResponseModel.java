@@ -1,17 +1,20 @@
 package com.example.leavetracker.models.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResponseModel {
 
-    private HttpStatus httpStatus;
+    private String Status;
 
-    private String messgae;
+    private String message;
 
-    private String data;
+    private Object data;
 
-    private String error;
+    private Object error;
 
 }

@@ -26,21 +26,27 @@ public class LeaveController {
     @GetMapping(value = "/{empId}")
     public ResponseEntity<ResponseModel> getLeavesByEmpId(@PathVariable Long empId) {
         try {
-            return new ResponseEntity<>(leaveService.getLeave(empId) , HttpStatus.OK);
-        }catch (Exception ex)
-        {
-            return null;
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, leaveService.getLeave(empId), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping(value = "/{leaveId}")
-    public ResponseEntity getLeaves(@PathVariable Long leaveId) {
-
-        return leaveService.getLeave(leaveId);
+    public ResponseEntity<ResponseModel> getLeaves(@PathVariable Long leaveId) {
+        try {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, leaveService.getLeave(leaveId), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(value = "/{empId}")
     public ResponseEntity<ResponseModel> applyLeave(@PathVariable Long empId, @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
-        return new ResponseEntity<>(new ResponseModel(Constants.STATUS_SUCCESS , null ,leaveService.applyLeave(leaveRequestModel), null),HttpStatus.OK);
+        try {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null,leaveService.applyLeave(leaveRequestModel), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+        }
     }
 }

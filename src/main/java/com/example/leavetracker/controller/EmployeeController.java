@@ -1,5 +1,6 @@
 package com.example.leavetracker.controller;
 
+import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.EmployeeService;
@@ -22,20 +23,31 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping(value = "/{empId}" , produces = "application/JSON")
+    @GetMapping(value = "/{empId}", produces = "application/JSON")
     public ResponseEntity<ResponseModel> fetchEmployee(@PathVariable Long empId) {
-        return employeeService.getAllEmployees();
+        try {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.getAllEmployees(), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<ResponseModel> employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
-        employeeService.saveEmployee(employeeRequestModel);
-
+        try {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.saveEmployee(employeeRequestModel), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ResponseModel> deleteEmployee(@PathVariable Long id) {
-        return employeeService.deleteEmployee(id);
+        try {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.deleteEmployee(id), null)), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+        }
     }
 
 }

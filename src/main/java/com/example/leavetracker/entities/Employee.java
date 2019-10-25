@@ -28,10 +28,10 @@ public class Employee implements Serializable {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @Column(name = "employee_name" , nullable=false)
-    private String employeeName;
+    @Column(name = "name" , nullable=false)
+    private String name;
 
-    @Column(name = "employee_gender", nullable = false)
+    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -39,7 +39,7 @@ public class Employee implements Serializable {
     private LocalDate joiningDate;
 
     @Column(name="email_address" , nullable =false , unique = true)
-    private String emmail;
+    private String email;
 
     @Column(name = "leave_balance", nullable = false)
     private Long leaveBalance;

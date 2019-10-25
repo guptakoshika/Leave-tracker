@@ -14,6 +14,7 @@ public class Constants {
     public static final String EMP_ID_MANDATORY = "Employee id cannot be null.";
 
     //leave api
+    public static final String LEAVE_NOT_FOUND = "leave not found.";
 //    public static final String EMP_ADDED_SUCCESS = "Employee saved successfully.";
 //    public static final String EMP_ADDED_SUCCESS = "Employee saved successfully.";
 //    public static final String EMP_ADDED_SUCCESS = "Employee saved successfully.";

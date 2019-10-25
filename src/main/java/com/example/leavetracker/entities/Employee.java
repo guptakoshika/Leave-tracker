@@ -28,8 +28,7 @@ public class Employee implements Serializable {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @Column(name = "employee_name")
-    @NotNull
+    @Column(name = "employee_name" , nullable=false)
     private String employeeName;
 
     @Column(name = "employee_gender", nullable = false)
@@ -38,6 +37,9 @@ public class Employee implements Serializable {
 
     @Column(name = "joining_date", nullable = false)
     private LocalDate joiningDate;
+
+    @Column(name="email_address" , nullable =false , unique = true)
+    private String emmail;
 
     @Column(name = "leave_balance", nullable = false)
     private Long leaveBalance;

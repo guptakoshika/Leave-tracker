@@ -44,13 +44,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /***
      * This method is used to fetch employee from database
-     * @param empIdPassed: Accepts an employee id.
+     * @param empId: Accepts an employee id.
      * @returns Optional<Employee> : Returns if an employee if found else throw exception
      */
-    public ResponseEntity fetchEmployee(int empIdPassed) throws Exception {
+    public ResponseEntity fetchEmployee(Long empId) throws Exception {
         try {
-            if (employeeRepository.existsById(empIdPassed))
-                return new ResponseEntity(employeeRepository.findById(empIdPassed), HttpStatus.OK);
+            if (employeeRepository.existsById(empId))
+                return new ResponseEntity(employeeRepository.findById(empId), HttpStatus.OK);
             else
                 throw new Exception("employee not found");
 
@@ -75,13 +75,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /***
      * This method is used to delete the employee from the db.
-     * @Params empIdPassed : employee id which has to be removed.
+     * @param  empId : employee id which has to be removed.
      * @returns deleted employee object.
      */
-    public HttpStatus deleteEmployee(int employeeIdPassed) {
+    public HttpStatus deleteEmployee(Long empId) {
         try {
-            if (employeeRepository.existsById(employeeIdPassed)) {
-                employeeRepository.deleteById(employeeIdPassed);
+            if (employeeRepository.existsById(empId)) {
+                employeeRepository.deleteById(empId);
                 return HttpStatus.OK;
             } else
                 throw new Exception("employee doesn't exists");

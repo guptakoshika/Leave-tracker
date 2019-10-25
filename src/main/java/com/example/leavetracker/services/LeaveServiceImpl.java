@@ -1,6 +1,8 @@
 package com.example.leavetracker.services;
 
+import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.LeaveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,7 @@ public class LeaveServiceImpl implements LeaveService {
      * @return HttpStatus : will return ok if done else
      * error will reported to logs.
      */
-    public HttpStatus applyLeave(LeaveRequestModel leaveRequestModel) {
+    public ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel) {
         try {
 //            leaveRepository.save(leave);
 //            leave.getEmployee().setLeaveBalance(leave.getEmployee().getLeaveBalance() - 1);
@@ -47,13 +49,13 @@ public class LeaveServiceImpl implements LeaveService {
     /**
      * this method is used to get all the leaves applied by the employee.
      *
-     * @param empIdPassed:id of the employee
+     * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
      */
-    public ResponseEntity getLeave(int empIdPassed) {
+    public ResponseEntity<ResponseModel> getLeave(Long empId) {
         try {
-            if (leaveRepository.existsById(empIdPassed)) {
-                return new ResponseEntity(leaveRepository.findAllById(Collections.singleton(empIdPassed)), HttpStatus.OK);
+            if (leaveRepository.existsById(empId)) {
+                return new ResponseEntity(leaveRepository.findAllById(Collections.singleton(empId)), HttpStatus.OK);
             } else {
                 throw new Exception("data not found");
             }
@@ -69,12 +71,12 @@ public class LeaveServiceImpl implements LeaveService {
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
-    public ResponseEntity getLeaveById(int leaveID) {
+    public ResponseEntity<ResponseModel> getLeaveById(Long leaveID) {
         try {
             if (leaveRepository.existsById(leaveID)) {
                 return new ResponseEntity(leaveRepository.findById(leaveID), HttpStatus.OK);
             } else {
-                throw new Exception("leave not found");
+                throw new Exception(Constants.LEAVE_NOT_FOUND);
             }
         } catch (Exception e) {
             logger.info(e.getMessage());

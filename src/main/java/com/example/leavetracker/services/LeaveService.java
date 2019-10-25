@@ -19,10 +19,10 @@ public interface LeaveService {
     /**
      * this method is used to get all the leaves applied by the employee.
      *
-     * @param empIdPassed:id of the employee
+     * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
      */
-    ResponseEntity getLeave(int empIdPassed);
+    ResponseEntity getLeave(Long empId);
 
     /**
      * this method is used to get leave by id.
@@ -30,5 +30,5 @@ public interface LeaveService {
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
-    ResponseEntity getLeaveById(int leaveID);
+    ResponseEntity getLeaveById(Long leaveID);
 }

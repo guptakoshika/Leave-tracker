@@ -26,7 +26,7 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    private int employeeId;
+    private Integer employeeId;
 
     @Column(name = "employee_name")
     @NotNull
@@ -40,7 +40,7 @@ public class Employee implements Serializable {
     private LocalDate joiningDate;
 
     @Column(name = "leave_balance", nullable = false)
-    private int leaveBalance;
+    private Integer leaveBalance;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")

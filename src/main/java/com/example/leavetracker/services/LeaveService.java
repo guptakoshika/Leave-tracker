@@ -1,6 +1,7 @@
 package com.example.leavetracker.services;
 
 import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.models.response.ResponseModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +15,7 @@ public interface LeaveService {
      * @return HttpStatus : will return ok if done else
      * error will reported to logs.
      */
-    HttpStatus applyLeave(LeaveRequestModel leaveRequestModel);
+    ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel);
 
     /**
      * this method is used to get all the leaves applied by the employee.
@@ -22,7 +23,7 @@ public interface LeaveService {
      * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
      */
-    ResponseEntity getLeave(Long empId);
+    ResponseEntity<ResponseModel> getLeave(Long empId);
 
     /**
      * this method is used to get leave by id.
@@ -30,5 +31,5 @@ public interface LeaveService {
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
-    ResponseEntity getLeaveById(Long leaveID);
+    ResponseEntity<ResponseModel> getLeaveById(Long leaveID);
 }

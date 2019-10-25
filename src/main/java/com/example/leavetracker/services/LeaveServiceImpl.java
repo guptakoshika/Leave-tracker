@@ -1,6 +1,9 @@
 package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
+import com.example.leavetracker.entities.Leave;
+import com.example.leavetracker.enums.LeaveStatus;
+import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.LeaveRepository;
@@ -36,13 +39,11 @@ public class LeaveServiceImpl implements LeaveService {
      */
     public ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel) {
         try {
-//            leaveRepository.save(leave);
-//            leave.getEmployee().setLeaveBalance(leave.getEmployee().getLeaveBalance() - 1);
-//            leave.setLeaveStatus(LeaveStatus.APPLIED);
-            return HttpStatus.OK;
+            leaveRepository.save(getLeave(leaveRequestModel));
+            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, null , null , null) , HttpStatus.OK);
         } catch (Exception e) {
             log.info(e.getMessage());
-            return HttpStatus.URI_TOO_LONG;
+            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, null , null , null) , HttpStatus.OK);
         }
     }
 
@@ -82,5 +83,15 @@ public class LeaveServiceImpl implements LeaveService {
             log.info(e.getMessage());
             return new ResponseEntity(e, HttpStatus.NOT_FOUND);
         }
+    }
+
+    private Leave getLeave(LeaveRequestModel leaveRequestModel){
+        Leave leave = new Leave();
+        leave.setStatus(LeaveStatus.APPLIED);
+        leave.setType(LeaveType.SABBATICAL);
+        //leave.setStartDate(leaveRequestModel.getLeaveStartDate());
+        //leave.setEndDate(leaveRequestModel.getLeaveEndDate());
+        leave.setReason(leaveRequestModel.getLeaveReason());
+        return leave;
     }
 }

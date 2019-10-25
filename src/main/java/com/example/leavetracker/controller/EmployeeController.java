@@ -30,7 +30,7 @@ public class EmployeeController {
     @PostMapping(value = "")
     public ResponseEntity<ResponseModel> employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
         employeeService.saveEmployee(employeeRequestModel);
-        return HttpStatus.ACCEPTED;
+
     }
 
     @DeleteMapping(value = "/{id}")

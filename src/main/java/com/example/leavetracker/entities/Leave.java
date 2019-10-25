@@ -26,24 +26,24 @@ public class Leave implements Serializable {
     @Column(name = "Id")
     private Long id;
 
-    @Column(name = "Reason")
+    @Column(name = "reason")
     private String reason;
 
-    @Column(name = "leave_type")
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     @NotNull
-    private LeaveType leaveType;
+    private LeaveType Type;
 
-    @Column(name = "leave_start_date")
+    @Column(name = "start_date")
     @NotNull
-    private LocalDate leaveStartDate;
+    private LocalDate startDate;
 
-    @Column(name = "Leave_end_date")
+    @Column(name = "end_date")
     @NotNull
-    private LocalDate leaveEndDate;
+    private LocalDate EndDate;
 
-    @Column(name = "leave_status")
-    private LeaveStatus leaveStatus;
+    @Column(name = "status")
+    private LeaveStatus status;
 
     @ManyToOne
     private Employee employee;

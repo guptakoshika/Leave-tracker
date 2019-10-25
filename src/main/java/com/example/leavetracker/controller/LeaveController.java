@@ -1,6 +1,8 @@
 package com.example.leavetracker.controller;
 
+import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.LeaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +24,23 @@ public class LeaveController {
     private LeaveService leaveService;
 
     @GetMapping(value = "/{empId}")
-    public ResponseEntity getLeavesByEmpId(@PathVariable int empId) {
-        return leaveService.getLeave(empId);
+    public ResponseEntity<ResponseModel> getLeavesByEmpId(@PathVariable Long empId) {
+        try {
+            return new ResponseEntity<>(leaveService.getLeave(empId) , HttpStatus.OK);
+        }catch (Exception ex)
+        {
+            return null;
+        }
     }
 
     @GetMapping(value = "/{leaveId}")
-    public ResponseEntity getLeaves(@PathVariable int leaveId) {
+    public ResponseEntity getLeaves(@PathVariable Long leaveId) {
+
         return leaveService.getLeave(leaveId);
     }
 
     @PostMapping(value = "/{empId}")
-    public HttpStatus applyLeave(@PathVariable Long empId, @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
-        return leaveService.applyLeave(leaveRequestModel);
+    public ResponseEntity<ResponseModel> applyLeave(@PathVariable Long empId, @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
+        return new ResponseEntity<>(new ResponseModel(Constants.STATUS_SUCCESS , null ,leaveService.applyLeave(leaveRequestModel), null),HttpStatus.OK);
     }
 }

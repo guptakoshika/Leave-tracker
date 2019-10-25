@@ -19,14 +19,14 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "employee")
 @Data
+@Entity(name = "employees")
 public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "employee_id")
-    private Integer employeeId;
+    private Long employeeId;
 
     @Column(name = "employee_name")
     @NotNull
@@ -40,7 +40,7 @@ public class Employee implements Serializable {
     private LocalDate joiningDate;
 
     @Column(name = "leave_balance", nullable = false)
-    private Integer leaveBalance;
+    private Long leaveBalance;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")

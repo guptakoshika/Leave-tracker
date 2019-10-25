@@ -17,14 +17,14 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@Entity
 @Data
+@Entity(name = "leaves")
 public class Leave implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "Reason")
     private String reason;

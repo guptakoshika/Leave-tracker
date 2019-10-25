@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class LeaveRequestModel {
 
     @NotNull
-    private Integer EmployeeId;
+    private Long EmployeeId;
 
     @NotNull
     private String leaveStartDate;

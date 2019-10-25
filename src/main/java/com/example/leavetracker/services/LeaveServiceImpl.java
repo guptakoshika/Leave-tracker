@@ -4,8 +4,7 @@ import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.LeaveRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,10 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
+@Slf4j
 public class LeaveServiceImpl implements LeaveService {
 
-    Logger logger = LoggerFactory.getLogger(LeaveServiceImpl.class);
+    //Logger logger = LoggerFactory.getLogger(LeaveServiceImpl.class);
 
 
     private LeaveRepository leaveRepository;
@@ -41,7 +41,7 @@ public class LeaveServiceImpl implements LeaveService {
 //            leave.setLeaveStatus(LeaveStatus.APPLIED);
             return HttpStatus.OK;
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return HttpStatus.URI_TOO_LONG;
         }
     }
@@ -60,7 +60,7 @@ public class LeaveServiceImpl implements LeaveService {
                 throw new Exception("data not found");
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return new ResponseEntity(e, HttpStatus.NOT_FOUND);
         }
     }
@@ -79,7 +79,7 @@ public class LeaveServiceImpl implements LeaveService {
                 throw new Exception(Constants.LEAVE_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return new ResponseEntity(e, HttpStatus.NOT_FOUND);
         }
     }

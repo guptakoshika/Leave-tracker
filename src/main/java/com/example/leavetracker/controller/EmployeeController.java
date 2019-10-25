@@ -1,6 +1,7 @@
 package com.example.leavetracker.controller;
 
 import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +18,23 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping(value = "")
-    public ResponseEntity getAllEmployees() {
+    public ResponseEntity<ResponseModel> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
-    @GetMapping(value = "/{empId}")
-    public ResponseEntity fetchEmployee(@PathVariable int empId) {
+    @GetMapping(value = "/{empId}" , produces = "application/JSON")
+    public ResponseEntity<ResponseModel> fetchEmployee(@PathVariable Long empId) {
         return employeeService.getAllEmployees();
     }
 
     @PostMapping(value = "")
-    public HttpStatus employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
+    public ResponseEntity<ResponseModel> employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
         employeeService.saveEmployee(employeeRequestModel);
         return HttpStatus.ACCEPTED;
     }
 
     @DeleteMapping(value = "/{id}")
-    public HttpStatus deleteEmployee(@PathVariable int id) {
+    public ResponseEntity<ResponseModel> deleteEmployee(@PathVariable Long id) {
         return employeeService.deleteEmployee(id);
     }
 

@@ -5,6 +5,7 @@ import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
 
     private EmployeeRepository employeeRepository;
 
-    Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+    //Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -37,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(newEmployee);
             return new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADDED_SUCCESS, newEmployee, null);
         } catch (Exception ex) {
-            logger.info(ex.getMessage());
+            log.info(ex.getMessage());
             return new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADDED_SUCCESS, null, ex);
         }
     }
@@ -55,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 throw new Exception("employee not found");
 
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
@@ -68,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return new ResponseEntity(employeeRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return new ResponseEntity(HttpStatus.REQUEST_TIMEOUT);
         }
     }
@@ -86,7 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             } else
                 throw new Exception("employee doesn't exists");
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            log.info(e.getMessage());
             return HttpStatus.BAD_REQUEST;
         }
     }

@@ -20,13 +20,14 @@ public class LeaveServiceImpl implements LeaveService {
     private LeaveRepository leaveRepository;
 
     @Autowired
-    public LeaveServiceImpl(LeaveRepository leaveRepository){
+    public LeaveServiceImpl(LeaveRepository leaveRepository) {
         this.leaveRepository = leaveRepository;
     }
 
     /**
-     *this method is used to make a leave request and save
+     * this method is used to make a leave request and save
      * it to db
+     *
      * @param leaveRequestModel: Leave class object.
      * @return HttpStatus : will return ok if done else
      * error will reported to logs.
@@ -44,7 +45,8 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     /**
-     *this method is used to get all the leaves applied by the employee.
+     * this method is used to get all the leaves applied by the employee.
+     *
      * @param empIdPassed:id of the employee
      * @return List of all the leaves associated with the employee.
      */
@@ -57,29 +59,26 @@ public class LeaveServiceImpl implements LeaveService {
             }
         } catch (Exception e) {
             logger.info(e.getMessage());
-            return new ResponseEntity(e,HttpStatus.NOT_FOUND);
+            return new ResponseEntity(e, HttpStatus.NOT_FOUND);
         }
     }
 
     /**
-     *this method is used to get leave by id.
+     * this method is used to get leave by id.
+     *
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
     public ResponseEntity getLeaveById(int leaveID) {
-        try{
-            if(leaveRepository.existsById(leaveID))
-            {
-                return new ResponseEntity(leaveRepository.findById(leaveID),HttpStatus.OK);
-            }
-            else
-            {
+        try {
+            if (leaveRepository.existsById(leaveID)) {
+                return new ResponseEntity(leaveRepository.findById(leaveID), HttpStatus.OK);
+            } else {
                 throw new Exception("leave not found");
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             logger.info(e.getMessage());
-            return new ResponseEntity(e , HttpStatus.NOT_FOUND);
+            return new ResponseEntity(e, HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.leavetracker.enums;
 
 
 public enum LeaveType {
+
     MATERNITY("MATERNITY"),
     PATERNITY("PATERNITY"),
     SABBATICAL("SABATICAL");

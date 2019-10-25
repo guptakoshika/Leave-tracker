@@ -1,6 +1,7 @@
 package com.example.leavetracker.models.request;
 
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -13,5 +14,8 @@ public class LeaveRequestModel {
     private String leaveEndDate;
 
     private String leaveReason;
+
+    @NotNull
+    private String leaveType;
 
 }

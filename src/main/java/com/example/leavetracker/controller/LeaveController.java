@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value ="/api/leave")
+@RequestMapping(value = "/api/leave")
 public class LeaveController {
 
     Logger logger = LoggerFactory.getLogger(Controller.class);
@@ -32,7 +32,7 @@ public class LeaveController {
     }
 
     @PostMapping(value = "/{empId}")
-    public HttpStatus applyLeave(@PathVariable Long empId , @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
+    public HttpStatus applyLeave(@PathVariable Long empId, @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
         return leaveService.applyLeave(leaveRequestModel);
     }
 }

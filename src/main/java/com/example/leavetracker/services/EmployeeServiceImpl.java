@@ -21,7 +21,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository){ this.employeeRepository = employeeRepository; }
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
     /***
      * This method is used to save employee locally via Employee Object
      * @param employeeRequestModel : Accepts an employee object
@@ -32,10 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             Employee newEmployee = new Employee();
             newEmployee = getNewEmployeeObj(employeeRequestModel);
             employeeRepository.save(newEmployee);
-            return new ResponseModel(Constants.STATUS_SUCCESS , Constants.EMP_ADDED_SUCCESS , newEmployee , null);
+            return new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADDED_SUCCESS, newEmployee, null);
         } catch (Exception ex) {
             logger.info(ex.getMessage());
-            return new ResponseModel(Constants.STATUS_FAILED , Constants.EMP_ADDED_SUCCESS , null , ex);
+            return new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADDED_SUCCESS, null, ex);
         }
     }
 
@@ -88,11 +91,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel){
+    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) {
         Employee emp = new Employee();
-        if(employeeRequestModel.getName() != null && employeeRequestModel.getName() != ""){
-                emp.setEmployeeName(employeeRequestModel.getName());
-                return emp;
+        if (employeeRequestModel.getName() != null && employeeRequestModel.getName() != "") {
+            emp.setEmployeeName(employeeRequestModel.getName());
+            return emp;
         }
         return null;
     }

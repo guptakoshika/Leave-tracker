@@ -4,6 +4,7 @@ import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.LeaveService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/api/leave")
 public class LeaveController {
-
-    Logger logger = LoggerFactory.getLogger(Controller.class);
 
     @Autowired
     private LeaveService leaveService;

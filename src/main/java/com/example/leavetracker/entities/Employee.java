@@ -13,9 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public class Employee implements Serializable {
     private Gender gender;
 
     @Column(name = "joining_date", nullable = false)
-    private LocalDate joiningDate;
+    private Date joiningDate;
 
     @Column(name="email_address" , nullable =false , unique = true)
     private String email;

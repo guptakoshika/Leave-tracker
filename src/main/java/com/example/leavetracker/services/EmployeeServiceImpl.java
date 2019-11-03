@@ -2,9 +2,11 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
 import com.example.leavetracker.entities.Employee;
+import com.example.leavetracker.models.CreateEmployee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
+import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
 
     private EmployeeRepository employeeRepository;
-
-    //Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -94,10 +96,34 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) {
-        Employee emp = new Employee();
-        if (employeeRequestModel.getName() != null && employeeRequestModel.getName() != "") {
-            emp.setName(employeeRequestModel.getName());
-            return emp;
+        CreateEmployee createEmployee = new CreateEmployee();
+        createEmployee = isValidReuest(createEmployee , employeeRequestModel);
+        if(createEmployee.getIsValid()){
+
+        }
+        return null;
+    }
+
+    private CreateEmployee isValidReuest(CreateEmployee createEmployee , EmployeeRequestModel employeeRequestModel){
+        Employee employee = new Employee();
+        if(employeeRequestModel != null){
+            if(employeeRequestModel.getName()!= null && employeeRequestModel.getName() !=""){
+                employee.setName(employeeRequestModel.getName());
+            }else {
+
+            }
+            if(employeeRequestModel.getJoiningDate() != null && employeeRequestModel.getJoiningDate() != ""){
+                Date date =  Util.gateDateFromString(employeeRequestModel.getJoiningDate());
+                 if(Util.isValidDate(date)){
+                     employee.setJoiningDate(date);
+                 }else{
+
+                 }
+            }else{
+
+            }
+        }else{
+
         }
         return null;
     }

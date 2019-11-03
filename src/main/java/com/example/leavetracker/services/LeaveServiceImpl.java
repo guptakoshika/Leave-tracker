@@ -19,9 +19,6 @@ import java.util.Collections;
 @Slf4j
 public class LeaveServiceImpl implements LeaveService {
 
-    //Logger logger = LoggerFactory.getLogger(LeaveServiceImpl.class);
-
-
     private LeaveRepository leaveRepository;
 
     @Autowired

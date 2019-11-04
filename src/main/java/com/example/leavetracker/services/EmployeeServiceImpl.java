@@ -2,6 +2,7 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
 import com.example.leavetracker.entities.Employee;
+import com.example.leavetracker.enums.Gender;
 import com.example.leavetracker.models.CreateEmployee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
@@ -38,11 +39,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             Employee newEmployee = new Employee();
             newEmployee = getNewEmployeeObj(employeeRequestModel);
-            employeeRepository.save(newEmployee);
-            return new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, newEmployee, null);
+            if (newEmployee != null) {
+                employeeRepository.save(newEmployee);
+                return new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, newEmployee, null);
+            } else {
+                return new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null);
+            }
         } catch (Exception ex) {
             log.info(ex.getMessage());
-            return new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, ex);
+            return new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null);
         }
     }
 
@@ -60,7 +65,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ResponseEntity(new ResponseModel(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new ResponseModel(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -97,34 +102,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) {
         CreateEmployee createEmployee = new CreateEmployee();
-        createEmployee = isValidReuest(createEmployee , employeeRequestModel);
-        if(createEmployee.getIsValid()){
-
+        createEmployee = isValidReuest(createEmployee, employeeRequestModel);
+        if (createEmployee.getIsValid()) {
+            return createEmployee.getEmployee();
         }
         return null;
     }
 
-    private CreateEmployee isValidReuest(CreateEmployee createEmployee , EmployeeRequestModel employeeRequestModel){
+    private CreateEmployee isValidReuest(CreateEmployee createEmployee, EmployeeRequestModel employeeRequestModel) {
         Employee employee = new Employee();
-        if(employeeRequestModel != null){
-            if(employeeRequestModel.getName()!= null && employeeRequestModel.getName() !=""){
+        if (employeeRequestModel != null) {
+            if (employeeRequestModel.getName() != null && employeeRequestModel.getName() != "") {
                 employee.setName(employeeRequestModel.getName());
-            }else {
-
+                if (employeeRequestModel.getJoiningDate() != null && employeeRequestModel.getJoiningDate() != "") {
+                    Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
+                    if (Util.isValidDate(date)) {
+                        employee.setJoiningDate(date);
+                    } else {
+                        createEmployee.setIsValid(false);
+                        createEmployee.setEmployee(null);
+                        return createEmployee;
+                    }
+                    if (employeeRequestModel.getGender() != null && employeeRequestModel.getGender() != "") {
+                        employee.setGender(Gender.FEMALE);
+                        createEmployee.setIsValid(true);
+                    } else {
+                        createEmployee.setIsValid(false);
+                        createEmployee.setEmployee(null);
+                        return createEmployee;
+                    }
+                }
             }
-            if(employeeRequestModel.getJoiningDate() != null && employeeRequestModel.getJoiningDate() != ""){
-                Date date =  Util.gateDateFromString(employeeRequestModel.getJoiningDate());
-                 if(Util.isValidDate(date)){
-                     employee.setJoiningDate(date);
-                 }else{
-
-                 }
-            }else{
-
-            }
-        }else{
-
         }
-        return null;
+        return createEmployee;
     }
 }

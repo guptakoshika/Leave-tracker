@@ -35,6 +35,7 @@ public class EmployeeController {
     @PostMapping(value = "")
     public ResponseEntity<ResponseModel> employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
         try {
+            employeeService.saveEmployee(employeeRequestModel);
             return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.saveEmployee(employeeRequestModel), null)), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);

@@ -10,7 +10,7 @@ public class EmployeeRequestModel {
     @NotNull
     private String name;
 
-    @NotNull
+
     private String joiningDate;
 
     @NotNull

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CreateEmployee {
 
-    private Boolean isValid ;
+    private Boolean isValid;
 
     private Employee employee;
 }

@@ -27,7 +27,7 @@ public class Employee implements Serializable {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @Column(name = "name" , nullable=false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "gender", nullable = false)
@@ -37,7 +37,7 @@ public class Employee implements Serializable {
     @Column(name = "joining_date", nullable = false)
     private Date joiningDate;
 
-    @Column(name="email_address" , nullable =false , unique = true)
+    @Column(name = "email_address", nullable = false, unique = true)
     private String email;
 
     @Column(name = "leave_balance", nullable = false)

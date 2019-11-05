@@ -9,7 +9,7 @@ public class Constants {
 
     //employee api
     public static final String EMP_ADD_SUCCESS = "Employee saved successfully.";
-    public static final String EMP_ADD_FAILED = "Can't save the employee now.";
+    public static final String EMP_ADD_FAILED = "Error in saving employee.";
     public static final String  EMP_GENDER_FEMALE = "female";
     public static final String EMP_GENDER_MALE = "male";
     public static final String EMP_GENDER_NOT_DEFINED = "not defined";

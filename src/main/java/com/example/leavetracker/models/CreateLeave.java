@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class CreateLeave {
+
     private Boolean isValid;
 
     private Leave leave;

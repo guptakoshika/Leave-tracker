@@ -11,7 +11,7 @@ public interface EmployeeService {
      * @param employeeRequestModel : Accepts an employee object
      * @returns Response Entity: Returns Http status.
      */
-    ResponseModel saveEmployee(EmployeeRequestModel employeeRequestModel);
+    ResponseEntity<ResponseModel> saveEmployee(EmployeeRequestModel employeeRequestModel);
 
     /***
      * This method is used to fetch employee from database

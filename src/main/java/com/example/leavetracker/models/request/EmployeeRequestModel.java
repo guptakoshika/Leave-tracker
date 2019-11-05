@@ -10,10 +10,13 @@ public class EmployeeRequestModel {
     @NotNull
     private String name;
 
-
+    @NotNull
     private String joiningDate;
 
     @NotNull
     private String gender;
+
+    @NotNull
+    private String email;
 
 }

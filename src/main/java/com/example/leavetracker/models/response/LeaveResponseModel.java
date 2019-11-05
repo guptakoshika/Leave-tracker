@@ -12,8 +12,4 @@ public class LeaveResponseModel {
 
     private LeaveStatus status;
 
-    private String reason;
-
-    private String duration;
-
 }

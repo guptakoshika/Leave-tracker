@@ -39,7 +39,7 @@ public class LeaveController {
     @PostMapping(value = "/{empId}")
     public ResponseEntity<ResponseModel> applyLeave(@PathVariable Long empId, @Valid @RequestBody LeaveRequestModel leaveRequestModel) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, leaveService.applyLeave(leaveRequestModel), null)), HttpStatus.OK);
+            return new ResponseEntity<ResponseModel>(leaveService.applyLeave(leaveRequestModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
         }

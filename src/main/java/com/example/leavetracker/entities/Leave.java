@@ -38,8 +38,7 @@ public class Leave implements Serializable {
     @NotNull
     private Date EndDate;
 
+    @Enumerated(EnumType.STRING)
     private LeaveStatus status;
 
-    @ManyToOne
-    private Employee employee;
 }

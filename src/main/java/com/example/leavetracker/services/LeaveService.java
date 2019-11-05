@@ -15,7 +15,7 @@ public interface LeaveService {
      * @return HttpStatus : will return ok if done else
      * error will reported to logs.
      */
-    ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel);
+    ResponseModel applyLeave(LeaveRequestModel leaveRequestModel);
 
     /**
      * this method is used to get all the leaves applied by the employee.

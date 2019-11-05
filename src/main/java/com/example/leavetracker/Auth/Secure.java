@@ -10,6 +10,6 @@ public class Secure extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST , "/api/employee").permitAll().anyRequest().authenticated();
+        httpSecurity.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST , "/api/leave/{empId}").permitAll().anyRequest().authenticated();
     }
 }

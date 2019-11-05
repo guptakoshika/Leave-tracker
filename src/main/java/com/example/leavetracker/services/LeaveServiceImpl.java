@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 
@@ -38,16 +37,17 @@ public class LeaveServiceImpl implements LeaveService {
      * @return HttpStatus : will return ok if done else
      * error will reported to logs.
      */
-    public ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel) {
+    public ResponseModel applyLeave(LeaveRequestModel leaveRequestModel) {
         try {
             Leave leave = getLeave(leaveRequestModel);
-            LeaveResponseModel leaveResponseModel = new LeaveResponseModel();
-            leaveResponseModel.setStatus(leave.getStatus());
+            LeaveResponseModel leaveResponseModel;
             leaveRepository.save(leave);
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVE_APPLY_SUCCESS, leaveResponseModel, null), HttpStatus.OK);
+            leaveResponseModel = new LeaveResponseModel(leave.getStatus());
+            log.info("leave saved successfully!");
+            return new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVE_APPLY_SUCCESS, leaveResponseModel, null);
         } catch (Exception e) {
             log.info("exception occured in saving leave ");
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.LEAVE_APPLY_FAILED, null, e.getStackTrace()), HttpStatus.BAD_REQUEST);
+            return new ResponseModel(Constants.STATUS_FAILED, Constants.LEAVE_APPLY_FAILED, null, e.getStackTrace());
         }
     }
 
@@ -123,10 +123,12 @@ public class LeaveServiceImpl implements LeaveService {
             if (leaveRequestModel.getLeaveType() != null && leaveRequestModel.getLeaveType() != "") {
                 if (leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_SABBATICAL)) {
                     leave.setType(LeaveType.SABBATICAL);
+
                 } else if (leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_PATERNITY)) {
                     leave.setType(LeaveType.PATERNITY);
                 } else
                     leave.setType(LeaveType.MATERNITY);
+                return leave;
             }
         }
         return null;

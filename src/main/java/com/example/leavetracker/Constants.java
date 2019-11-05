@@ -20,7 +20,7 @@ public class Constants {
 
     //leave api
     public static final String LEAVE_NOT_FOUND = "leave not found.";
-    public static final String LEAVE_TYPE_SABBATICAL = "sabatical";
+    public static final String LEAVE_TYPE_SABBATICAL = "SABATICAL";
     public static final String LEAVE_TYPE_MATERNITY = "maternity";
     public static final String LEAVE_TYPE_PATERNITY = "paternity";
     public static final String LEAVE_APPLY_SUCCESS ="Leave appplied successfully!";

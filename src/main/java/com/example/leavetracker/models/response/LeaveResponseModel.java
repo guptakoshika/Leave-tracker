@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LeaveResponseModel {
 
-    private LeaveStatus leaveStatus;
+    private LeaveStatus status;
 
 }

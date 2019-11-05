@@ -5,6 +5,7 @@ import com.example.leavetracker.entities.Leave;
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.models.response.LeaveResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.LeaveRepository;
 import com.example.leavetracker.util.Util;
@@ -38,11 +39,14 @@ public class LeaveServiceImpl implements LeaveService {
      */
     public ResponseEntity<ResponseModel> applyLeave(LeaveRequestModel leaveRequestModel) {
         try {
-            leaveRepository.save(getLeave(leaveRequestModel));
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, null , null , null) , HttpStatus.OK);
+            Leave leave = getLeave(leaveRequestModel);
+            LeaveResponseModel leaveResponseModel = new LeaveResponseModel();
+            leaveResponseModel.setStatus(leave.getStatus());
+            leaveRepository.save(leave);
+            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVE_APPLY_SUCCESS, leaveResponseModel, null), HttpStatus.OK);
         } catch (Exception e) {
-            log.info(e.getMessage());
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, null , null , null) , HttpStatus.BAD_REQUEST);
+            log.info("exception occured in saving leave ");
+            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.LEAVE_APPLY_FAILED, null, e.getStackTrace()), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -84,43 +88,46 @@ public class LeaveServiceImpl implements LeaveService {
         }
     }
 
-    private Leave getLeave(LeaveRequestModel leaveRequestModel){
+    private Leave getLeave(LeaveRequestModel leaveRequestModel) {
         Leave leave = getValidatedLeave(leaveRequestModel);
-        if(leave!= null){
+        if (leave != null) {
+            log.info("all validations passed adding leave status to the model");
             leave.setStatus(LeaveStatus.APPLIED);
         }
-            return leave;
+        return leave;
     }
 
-    private Leave getValidatedLeave(LeaveRequestModel leaveRequestModel){
+    private Leave getValidatedLeave(LeaveRequestModel leaveRequestModel) {
         Leave leave = new Leave();
-        if(leaveRequestModel != null){
-            if(leaveRequestModel.getLeaveReason() != null && leaveRequestModel.getLeaveReason()!= ""){
+        if (leaveRequestModel != null) {
+            if (leaveRequestModel.getLeaveReason() != null && leaveRequestModel.getLeaveReason() != "") {
                 leave.setReason(leaveRequestModel.getLeaveReason());
-            }if(leaveRequestModel.getLeaveStartDate() != null && leaveRequestModel.getLeaveStartDate() != ""){
+            }
+            if (leaveRequestModel.getLeaveStartDate() != null && leaveRequestModel.getLeaveStartDate() != "") {
                 Date startDate = Util.gateDateFromString(leaveRequestModel.getLeaveStartDate());
-                if(Util.isValidDate(startDate)){
+                if (Util.isValidDate(startDate)) {
                     leave.setStartDate(startDate);
                     Date endDate = Util.gateDateFromString(leaveRequestModel.getLeaveEndDate());
-                    if(Util.isValidDate(endDate)){
+                    if (Util.isValidDate(endDate)) {
                         leave.setEndDate(endDate);
-                    }else{
+                    } else {
                         return null;
                     }
-                }else{
+                } else {
                     return null;
                 }
-            }else{
+            } else {
                 return null;
-            }if(leaveRequestModel.getLeaveType() != null && leaveRequestModel.getLeaveType() != ""){
-                if(leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_SABBATICAL)){
+            }
+            if (leaveRequestModel.getLeaveType() != null && leaveRequestModel.getLeaveType() != "") {
+                if (leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_SABBATICAL)) {
                     leave.setType(LeaveType.SABBATICAL);
-                }else if(leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_PATERNITY)){
+                } else if (leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_PATERNITY)) {
                     leave.setType(LeaveType.PATERNITY);
-                }else
+                } else
                     leave.setType(LeaveType.MATERNITY);
             }
         }
-            return null;
+        return null;
     }
 }

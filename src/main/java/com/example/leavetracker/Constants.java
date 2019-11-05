@@ -6,6 +6,8 @@ public class Constants {
     public static final String STATUS_SUCCESS = "Success";
     public static final String STATUS_FAILED = "failed";
 
+    //date
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     //employee api
     public static final String EMP_ADD_SUCCESS = "Employee saved successfully.";

@@ -5,15 +5,18 @@ import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.enums.Gender;
 import com.example.leavetracker.models.CreateEmployee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.models.response.EmployeeResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
 import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Date;
 
 @Service
@@ -38,16 +41,18 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.info("im in save employee method");
             Employee newEmployee;
             newEmployee = getNewEmployeeObj(employeeRequestModel);
+            EmployeeResponseModel empData;
             if (newEmployee != null) {
                 log.info("all validations passed! asving emp into db");
                 employeeRepository.save(newEmployee);
-                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, newEmployee, null), HttpStatus.OK);
+                empData = new EmployeeResponseModel(newEmployee.getEmployeeId(),newEmployee.getName());
+                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, empData, null), HttpStatus.OK);
             } else {
                 log.info("validation failed ! ");
                 return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null) , HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            log.info(ex.getMessage());
+            log.info("Exception in saving Employee" + ex.getMessage());
             return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
         }
     }
@@ -101,7 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) {
+    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) throws ParseException {
         CreateEmployee createEmployee = new CreateEmployee();
         createEmployee = isValidReuest(createEmployee, employeeRequestModel);
         if (createEmployee.getIsValid()) {
@@ -111,7 +116,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
-    private CreateEmployee isValidReuest(CreateEmployee createEmployee, EmployeeRequestModel employeeRequestModel) {
+    private CreateEmployee isValidReuest(CreateEmployee createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
        log.info("is valid request is called");
         Employee employee = new Employee();
         if (employeeRequestModel != null) {

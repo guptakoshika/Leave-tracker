@@ -1,5 +1,9 @@
 package com.example.leavetracker.util;
 
+import com.example.leavetracker.Constants;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Util {
@@ -9,8 +13,9 @@ public class Util {
      * @param date is of type String
      * @return date is object of type date.
      */
-    public static Date gateDateFromString(String date){
-        return null;
+    public static Date gateDateFromString(String date) throws ParseException {
+        Date resDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
+        return resDate;
     }
 
     /**

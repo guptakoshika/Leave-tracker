@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 
@@ -88,7 +89,7 @@ public class LeaveServiceImpl implements LeaveService {
         }
     }
 
-    private Leave getLeave(LeaveRequestModel leaveRequestModel) {
+    private Leave getLeave(LeaveRequestModel leaveRequestModel) throws Exception {
         Leave leave = getValidatedLeave(leaveRequestModel);
         if (leave != null) {
             log.info("all validations passed adding leave status to the model");
@@ -97,7 +98,7 @@ public class LeaveServiceImpl implements LeaveService {
         return leave;
     }
 
-    private Leave getValidatedLeave(LeaveRequestModel leaveRequestModel) {
+    private Leave getValidatedLeave(LeaveRequestModel leaveRequestModel) throws Exception {
         Leave leave = new Leave();
         if (leaveRequestModel != null) {
             if (leaveRequestModel.getLeaveReason() != null && leaveRequestModel.getLeaveReason() != "") {

@@ -7,6 +7,7 @@ import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.LeaveRepository;
+import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -40,7 +42,7 @@ public class LeaveServiceImpl implements LeaveService {
             return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, null , null , null) , HttpStatus.OK);
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, null , null , null) , HttpStatus.OK);
+            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, null , null , null) , HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -83,12 +85,42 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     private Leave getLeave(LeaveRequestModel leaveRequestModel){
+        Leave leave = getValidatedLeave(leaveRequestModel);
+        if(leave!= null){
+            leave.setStatus(LeaveStatus.APPLIED);
+        }
+            return leave;
+    }
+
+    private Leave getValidatedLeave(LeaveRequestModel leaveRequestModel){
         Leave leave = new Leave();
-        leave.setStatus(LeaveStatus.APPLIED);
-        leave.setType(LeaveType.SABBATICAL);
-        //leave.setStartDate(leaveRequestModel.getLeaveStartDate());
-        //leave.setEndDate(leaveRequestModel.getLeaveEndDate());
-        leave.setReason(leaveRequestModel.getLeaveReason());
-        return leave;
+        if(leaveRequestModel != null){
+            if(leaveRequestModel.getLeaveReason() != null && leaveRequestModel.getLeaveReason()!= ""){
+                leave.setReason(leaveRequestModel.getLeaveReason());
+            }if(leaveRequestModel.getLeaveStartDate() != null && leaveRequestModel.getLeaveStartDate() != ""){
+                Date startDate = Util.gateDateFromString(leaveRequestModel.getLeaveStartDate());
+                if(Util.isValidDate(startDate)){
+                    leave.setStartDate(startDate);
+                    Date endDate = Util.gateDateFromString(leaveRequestModel.getLeaveEndDate());
+                    if(Util.isValidDate(endDate)){
+                        leave.setEndDate(endDate);
+                    }else{
+                        return null;
+                    }
+                }else{
+                    return null;
+                }
+            }else{
+                return null;
+            }if(leaveRequestModel.getLeaveType() != null && leaveRequestModel.getLeaveType() != ""){
+                if(leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_SABBATICAL)){
+                    leave.setType(LeaveType.SABBATICAL);
+                }else if(leaveRequestModel.getLeaveType().equalsIgnoreCase(Constants.LEAVE_TYPE_PATERNITY)){
+                    leave.setType(LeaveType.PATERNITY);
+                }else
+                    leave.setType(LeaveType.MATERNITY);
+            }
+        }
+            return null;
     }
 }

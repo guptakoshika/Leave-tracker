@@ -140,6 +140,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                         }else{
                             employee.setGender(Gender.NOT_DEFINED);
                         }
+                        employee.setEmail(employeeRequestModel.getEmail());
                         createEmployee.setEmployee(employee);
                     } else {
                         createEmployee.setIsValid(false);

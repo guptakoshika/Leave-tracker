@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -24,23 +25,21 @@ public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
     private Long employeeId;
 
-    @Column(name = "name", nullable = false)
+    @NotNull(message = "employee name cannot be null")
     private String name;
 
-    @Column(name = "gender", nullable = false)
+    @NotNull(message = "employee gender cannot be null")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "joining_date", nullable = false)
+    @NotNull(message = "employee joining date cannot be null")
     private Date joiningDate;
 
-    @Column(name = "email_address", nullable = false, unique = true)
+    @Column(name = "email_address", nullable = false , unique = true)
     private String email;
 
-    @Column(name = "leave_balance", nullable = false)
     private Long leaveBalance;
 
     @OneToMany(cascade = CascadeType.ALL)

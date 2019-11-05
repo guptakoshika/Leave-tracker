@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @Entity(name = "leaves")
@@ -23,26 +24,20 @@ public class Leave implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id")
     private Long id;
 
-    @Column(name = "reason")
     private String reason;
 
-    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     @NotNull
     private LeaveType Type;
 
-    @Column(name = "start_date")
     @NotNull
-    private LocalDate startDate;
+    private Date startDate;
 
-    @Column(name = "end_date")
     @NotNull
-    private LocalDate EndDate;
+    private Date EndDate;
 
-    @Column(name = "status")
     private LeaveStatus status;
 
     @ManyToOne

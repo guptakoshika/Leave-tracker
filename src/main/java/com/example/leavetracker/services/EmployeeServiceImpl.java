@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.util.Date;
 
@@ -44,11 +43,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (newEmployee != null) {
                 log.info("all validations passed! asving emp into db");
                 employeeRepository.save(newEmployee);
-                empData = new EmployeeResponseModel(newEmployee.getEmployeeId(),newEmployee.getName());
+                empData = new EmployeeResponseModel(newEmployee.getEmployeeId(), newEmployee.getName());
                 return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, empData, null), HttpStatus.OK);
             } else {
                 log.info("validation failed ! ");
-                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null) , HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
             log.info("Exception in saving Employee" + ex.getMessage());
@@ -116,42 +115,34 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private CreateEmployee isValidReuest(CreateEmployee createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
-       log.info("is valid request is called");
+        log.info("is valid request is called");
         Employee employee = new Employee();
         if (employeeRequestModel != null) {
-            log.info("request model is not null");
-            if (employeeRequestModel.getName() != null && employeeRequestModel.getName() != "") {
-                log.info("request model name validation passed");
-                employee.setName(employeeRequestModel.getName());
-                if (employeeRequestModel.getJoiningDate() != null && employeeRequestModel.getJoiningDate() != "") {
-                    Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
-                    if (Util.isValidDate(date)) {
-                        employee.setJoiningDate(date);
-                        log.info("date validation passed!");
-                    } else {
-                        log.info("date validation failed!");
-                        createEmployee.setIsValid(false);
-                        createEmployee.setEmployee(null);
-                        return createEmployee;
-                    }
-                    if (employeeRequestModel.getGender() != null && employeeRequestModel.getGender() != "") {
-                        log.info("gender validation passed!");
-                        createEmployee.setIsValid(true);
-                        if(employeeRequestModel.getGender().equalsIgnoreCase(Constants.EMP_GENDER_MALE)){
-                            employee.setGender(Gender.MALE);
-                        }else if(employeeRequestModel.getGender().equalsIgnoreCase(Constants.EMP_GENDER_FEMALE)){
-                           employee.setGender(Gender.FEMALE);
-                        }else{
-                            employee.setGender(Gender.NOT_DEFINED);
-                        }
-                        employee.setEmail(employeeRequestModel.getEmail());
-                        createEmployee.setEmployee(employee);
-                    } else {
-                        createEmployee.setIsValid(false);
-                        createEmployee.setEmployee(null);
-                        return createEmployee;
-                    }
-                }
+            if (employeeRequestModel.getName() == null || employeeRequestModel.getName().isEmpty()) {
+                createEmployee.setIsValid(false);
+                createEmployee.setEmployee(null);
+                return createEmployee;
+            }
+            if (employeeRequestModel.getEmail() == null || !employeeRequestModel.getEmail().isEmpty()) {
+                createEmployee.setIsValid(false);
+                createEmployee.setEmployee(null);
+                return createEmployee;
+            }
+            if (employeeRequestModel.getGender() == null || employeeRequestModel.getGender().isEmpty()) {
+                createEmployee.setEmployee(null);
+                createEmployee.setIsValid(true);
+                return createEmployee;
+            }
+            if(employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()){
+                createEmployee.setIsValid(false);
+                createEmployee.setEmployee(null);
+                return createEmployee;
+            }else{
+                Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
+                if(!Util.isValidDate(date));
+                createEmployee.setEmployee(null);
+                createEmployee.setIsValid(false);
+                return createEmployee;
             }
         }
         return createEmployee;

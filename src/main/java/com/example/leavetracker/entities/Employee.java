@@ -10,14 +10,9 @@ import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
 import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.CascadeType;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity(name = "employees")
@@ -41,9 +36,5 @@ public class Employee implements Serializable {
     private String email;
 
     private Long leaveBalance;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
-    private Set<Leave> leaves = new HashSet<>();
 
 }

@@ -4,19 +4,14 @@ import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Column;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity(name = "leaves")
@@ -30,15 +25,18 @@ public class Leave implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private LeaveType Type;
+    private LeaveType type;
 
     @NotNull
     private Date startDate;
 
     @NotNull
-    private Date EndDate;
+    private Date endDate;
 
     @Enumerated(EnumType.STRING)
     private LeaveStatus status;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

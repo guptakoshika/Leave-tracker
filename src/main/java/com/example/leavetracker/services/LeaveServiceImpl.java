@@ -1,12 +1,14 @@
 package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
+import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.entities.Leave;
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.LeaveResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
+import com.example.leavetracker.repository.EmployeeRepository;
 import com.example.leavetracker.repository.LeaveRepository;
 import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
@@ -14,19 +16,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class LeaveServiceImpl implements LeaveService {
 
     private LeaveRepository leaveRepository;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
-    public LeaveServiceImpl(LeaveRepository leaveRepository) {
+    public LeaveServiceImpl(LeaveRepository leaveRepository, EmployeeRepository employeeRepository) {
         this.leaveRepository = leaveRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     /**
@@ -94,6 +98,10 @@ public class LeaveServiceImpl implements LeaveService {
         if (leave != null) {
             log.info("all validations passed adding leave status to the model");
             leave.setStatus(LeaveStatus.APPLIED);
+            Optional<Employee> emp = employeeRepository.findById(leaveRequestModel.getEmployeeId());
+            if(emp != null){
+                leave.setEmployee(emp.get());
+            }
         }
         return leave;
     }

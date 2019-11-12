@@ -1,6 +1,5 @@
 package com.example.leavetracker.enums;
 
-
 public enum LeaveStatus {
 
     APPLIED("APPLIED"),

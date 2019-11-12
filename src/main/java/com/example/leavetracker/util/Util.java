@@ -4,6 +4,7 @@ import com.example.leavetracker.Constants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Util {
@@ -15,7 +16,7 @@ public class Util {
      */
     public static Date gateDateFromString(String date) throws ParseException {
         Date resDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
-        return resDate;
+        return null;
     }
 
     /**

@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface LeaveService {
+
     /**
-     * this method is used to make a leave request and save
-     * it to db
+     * this method is used to add a new leave to db.
      *
      * @param leaveRequestModel: Leave class object.
      * @return HttpStatus : will return ok if done else
@@ -17,7 +17,7 @@ public interface LeaveService {
     ResponseModel applyLeave(LeaveRequestModel leaveRequestModel);
 
     /**
-     * this method is used to get all the leaves applied by the employee.
+     * this method is used to get all the leaves basaed on employee id
      *
      * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
@@ -25,7 +25,7 @@ public interface LeaveService {
     ResponseEntity<ResponseModel> getLeave(Long empId);
 
     /**
-     * this method is used to get leave by id.
+     * this method is used to get a particular leave based on id
      *
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.

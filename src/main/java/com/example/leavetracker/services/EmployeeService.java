@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public interface EmployeeService {
+
     /***
      * This method is used to save employee locally via Employee Object
      * @param employeeRequestModel : Accepts an employee object

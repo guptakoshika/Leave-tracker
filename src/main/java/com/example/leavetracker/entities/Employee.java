@@ -2,7 +2,6 @@ package com.example.leavetracker.entities;
 
 import com.example.leavetracker.enums.Gender;
 import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

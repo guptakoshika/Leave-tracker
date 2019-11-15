@@ -3,8 +3,8 @@ package com.example.leavetracker.services;
 import com.example.leavetracker.Constants;
 import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.enums.Gender;
-import com.example.leavetracker.models.CreateEmployee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
+import com.example.leavetracker.models.response.CommonErrorResonse;
 import com.example.leavetracker.models.response.EmployeeResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
@@ -105,43 +105,42 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) throws ParseException {
-        CreateEmployee createEmployee = new CreateEmployee();
-        createEmployee = isValidReuest(createEmployee, employeeRequestModel);
-        if (createEmployee.getIsValid()) {
-            createEmployee.getEmployee().setLeaveBalance(12L);
-            return createEmployee.getEmployee();
+        CommonErrorResonse resp = isValidReuest(new CommonErrorResonse(), employeeRequestModel);
+        if (resp.isValid()) {
+            resp.getEmployee().setLeaveBalance(12L);
+            return resp.getEmployee();
         }
         return null;
     }
 
-    private CreateEmployee isValidReuest(CreateEmployee createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
+    private CommonErrorResonse isValidReuest(CommonErrorResonse createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
         log.info("is valid request is called");
         Employee employee = new Employee();
         if (employeeRequestModel != null) {
             if (employeeRequestModel.getName() == null || employeeRequestModel.getName().isEmpty()) {
-                createEmployee.setIsValid(false);
+                createEmployee.setValid(false);
                 createEmployee.setEmployee(null);
                 return createEmployee;
             }
             if (employeeRequestModel.getEmail() == null || !employeeRequestModel.getEmail().isEmpty()) {
-                createEmployee.setIsValid(false);
+                createEmployee.setValid(false);
                 createEmployee.setEmployee(null);
                 return createEmployee;
             }
             if (employeeRequestModel.getGender() == null || employeeRequestModel.getGender().isEmpty()) {
                 createEmployee.setEmployee(null);
-                createEmployee.setIsValid(true);
+                createEmployee.setValid(true);
                 return createEmployee;
             }
             if(employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()){
-                createEmployee.setIsValid(false);
+                createEmployee.setValid(false);
                 createEmployee.setEmployee(null);
                 return createEmployee;
             }else{
                 Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
                 if(!Util.isValidDate(date));
                 createEmployee.setEmployee(null);
-                createEmployee.setIsValid(false);
+                createEmployee.setValid(false);
                 return createEmployee;
             }
         }

@@ -2,8 +2,6 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
-import org.springframework.http.ResponseEntity;
-
 
 public interface LeaveService {
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import javax.validation.Valid;
 
 @RestController
@@ -25,18 +26,18 @@ public class LeaveController {
     @GetMapping(value = "/{empId}")
     public ResponseEntity<ResponseModel> getLeavesByEmpId(@PathVariable Long empId) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVES_FOR_EMP_ID, leaveService.getLeave(empId), null)), HttpStatus.OK);
+            return new ResponseEntity<>(leaveService.getLeave(empId), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping(value = "/{leaveId}")
     public ResponseEntity<ResponseModel> getLeaves(@PathVariable Long leaveId) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, leaveService.getLeave(leaveId), null)), HttpStatus.OK);
+            return new ResponseEntity<>(leaveService.getLeave(leaveId), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -45,7 +46,7 @@ public class LeaveController {
         try {
             return new ResponseEntity<ResponseModel>(leaveService.applyLeave(leaveRequestModel), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

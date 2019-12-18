@@ -6,7 +6,6 @@ import com.example.leavetracker.entities.Leave;
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
-import com.example.leavetracker.models.response.CommonErrorResonse;
 import com.example.leavetracker.models.response.LeaveResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
@@ -14,9 +13,8 @@ import com.example.leavetracker.repository.LeaveRepository;
 import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -48,10 +46,10 @@ public class LeaveServiceImpl implements LeaveService {
             LeaveResponseModel leaveResponseModel;
             leaveRepository.save(leave);
             leaveResponseModel = new LeaveResponseModel(leave.getStatus());
-            log.info("leave saved successfully!");
+            log.debug("leave saved successfully!");
             return new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVE_APPLY_SUCCESS, leaveResponseModel, null);
         } catch (Exception e) {
-            log.info("exception occured in saving leave ");
+            log.error("exception occured in saving leave ");
             return new ResponseModel(Constants.STATUS_FAILED, Constants.LEAVE_APPLY_FAILED, null, e.getStackTrace());
         }
     }
@@ -63,17 +61,23 @@ public class LeaveServiceImpl implements LeaveService {
      * @return List of all the leaves associated with the employee.
      */
     public ResponseModel getLeave(Long empId) {
+        ResponseModel resp = new ResponseModel();
         try {
-            ResponseModel resp = new ResponseModel();
-            if(empId != null){
-
-            }else{
-                return new ResponseModel(Constants.STATUS_FAILED , Constants.EMP_ID_MANDATORY , null , null);
+            if (empId != null) {
+                List<Leave> leaves = leaveRepository.getLeaveByEmpId(empId);
+                resp.setStatus(Constants.STATUS_SUCCESS);
+                resp.setMessage(Constants.LEAVES_FOR_EMP_ID);
+                resp.setData(leaves);
+            } else {
+                resp.setStatus(Constants.STATUS_FAILED);
+                resp.setMessage(Constants.EMP_ID_MANDATORY);
             }
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ResponseModel(Constants.STATUS_FAILED , null , null , e);
+            resp.setStatus(Constants.STATUS_FAILED);
+            resp.setMessage(Constants.EMP_ID_MANDATORY);
         }
+        return resp;
     }
 
     /**
@@ -83,16 +87,22 @@ public class LeaveServiceImpl implements LeaveService {
      * @return ResponseEntity object containing leave and http response.
      */
     public ResponseModel getLeaveById(Long leaveID) {
+        ResponseModel resp = new ResponseModel();
         try {
             if (leaveRepository.existsById(leaveID)) {
-                return new ResponseEntity(leaveRepository.findById(leaveID), HttpStatus.OK);
+                resp.setStatus(Constants.STATUS_SUCCESS);
+                resp.setMessage(Constants.LEAVES_FOR_EMP_ID);
+                resp.setData(leaveRepository.findById(leaveID));
             } else {
-                throw new Exception(Constants.LEAVE_NOT_FOUND);
+                resp.setStatus(Constants.STATUS_FAILED);
+                resp.setMessage(Constants.LEAVE_NOT_FOUND);
             }
         } catch (Exception e) {
-            log.info(e.getMessage());
-            return new ResponseEntity(e, HttpStatus.NOT_FOUND);
+            log.error(e.getMessage());
+            resp.setStatus(Constants.STATUS_FAILED);
+            resp.setMessage(Constants.LEAVE_NOT_FOUND);
         }
+        return resp;
     }
 
     private Leave getLeave(LeaveRequestModel leaveRequestModel) throws Exception {
@@ -101,7 +111,7 @@ public class LeaveServiceImpl implements LeaveService {
             log.info("all validations passed adding leave status to the model");
             leave.setStatus(LeaveStatus.APPLIED);
             Optional<Employee> emp = employeeRepository.findById(leaveRequestModel.getEmployeeId());
-            if(emp != null){
+            if (emp != null) {
                 leave.setEmployee(emp.get());
             }
         }

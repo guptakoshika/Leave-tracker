@@ -2,7 +2,6 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
 import com.example.leavetracker.entities.Employee;
-import com.example.leavetracker.enums.Gender;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.CommonErrorResonse;
 import com.example.leavetracker.models.response.EmployeeResponseModel;
@@ -35,22 +34,23 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @returns Response Entity: Returns Http status.
      */
     public ResponseEntity<ResponseModel> saveEmployee(EmployeeRequestModel employeeRequestModel) {
+        ResponseModel resp = new ResponseModel();
         try {
-            log.info("im in save employee method");
+            log.debug("im in save employee method");
             Employee newEmployee;
             newEmployee = getNewEmployeeObj(employeeRequestModel);
             EmployeeResponseModel empData;
             if (newEmployee != null) {
-                log.info("all validations passed! asving emp into db");
+                log.debug("all validations passed! asving emp into db");
                 employeeRepository.save(newEmployee);
                 empData = new EmployeeResponseModel(newEmployee.getEmployeeId(), newEmployee.getName());
                 return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, empData, null), HttpStatus.OK);
             } else {
-                log.info("validation failed ! ");
+                log.debug("validation failed ! ");
                 return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
             }
         } catch (Exception ex) {
-            log.info("Exception in saving Employee" + ex.getMessage());
+            log.error("Exception in saving Employee" + ex.getMessage());
             return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
         }
     }
@@ -81,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         try {
             return new ResponseEntity(employeeRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
-            log.info("expection occured in gettign all employees" + e);
+            log.error("expection occured in gettign all employees" + e);
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -99,7 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             } else
                 throw new Exception("employee doesn't exists");
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.error(e.getMessage());
             return HttpStatus.BAD_REQUEST;
         }
     }
@@ -114,32 +114,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private CommonErrorResonse isValidReuest(CommonErrorResonse createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
-        log.info("is valid request is called");
+        log.debug("is valid request is called");
         Employee employee = new Employee();
         if (employeeRequestModel != null) {
             if (employeeRequestModel.getName() == null || employeeRequestModel.getName().isEmpty()) {
                 createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
                 return createEmployee;
             }
             if (employeeRequestModel.getEmail() == null || !employeeRequestModel.getEmail().isEmpty()) {
                 createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
                 return createEmployee;
             }
             if (employeeRequestModel.getGender() == null || employeeRequestModel.getGender().isEmpty()) {
-                createEmployee.setEmployee(null);
-                createEmployee.setValid(true);
+                createEmployee.setValid(false);
                 return createEmployee;
             }
-            if(employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()){
+            if (employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()) {
                 createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
                 return createEmployee;
-            }else{
+            } else {
                 Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
-                if(!Util.isValidDate(date));
-                createEmployee.setEmployee(null);
+                if (!Util.isValidDate(date)) ;
                 createEmployee.setValid(false);
                 return createEmployee;
             }

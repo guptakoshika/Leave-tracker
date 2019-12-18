@@ -6,6 +6,7 @@ import com.example.leavetracker.entities.Leave;
 import com.example.leavetracker.enums.LeaveStatus;
 import com.example.leavetracker.enums.LeaveType;
 import com.example.leavetracker.models.request.LeaveRequestModel;
+import com.example.leavetracker.models.response.CommonErrorResonse;
 import com.example.leavetracker.models.response.LeaveResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
@@ -16,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,16 +62,17 @@ public class LeaveServiceImpl implements LeaveService {
      * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
      */
-    public ResponseEntity<ResponseModel> getLeave(Long empId) {
+    public ResponseModel getLeave(Long empId) {
         try {
-            if (leaveRepository.existsById(empId)) {
-                return new ResponseEntity(leaveRepository.findAllById(Collections.singleton(empId)), HttpStatus.OK);
-            } else {
-                throw new Exception("data not found");
+            ResponseModel resp = new ResponseModel();
+            if(empId != null){
+
+            }else{
+                return new ResponseModel(Constants.STATUS_FAILED , Constants.EMP_ID_MANDATORY , null , null);
             }
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ResponseEntity(e, HttpStatus.NOT_FOUND);
+            return new ResponseModel(Constants.STATUS_FAILED , null , null , e);
         }
     }
 
@@ -80,7 +82,7 @@ public class LeaveServiceImpl implements LeaveService {
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
-    public ResponseEntity<ResponseModel> getLeaveById(Long leaveID) {
+    public ResponseModel getLeaveById(Long leaveID) {
         try {
             if (leaveRepository.existsById(leaveID)) {
                 return new ResponseEntity(leaveRepository.findById(leaveID), HttpStatus.OK);

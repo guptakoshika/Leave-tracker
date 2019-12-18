@@ -22,7 +22,7 @@ public interface LeaveService {
      * @param empId :id of the employee
      * @return List of all the leaves associated with the employee.
      */
-    ResponseEntity<ResponseModel> getLeave(Long empId);
+    ResponseModel getLeave(Long empId);
 
     /**
      * this method is used to get a particular leave based on id
@@ -30,5 +30,5 @@ public interface LeaveService {
      * @param leaveID : id associated with the leave.
      * @return ResponseEntity object containing leave and http response.
      */
-    ResponseEntity<ResponseModel> getLeaveById(Long leaveID);
+    ResponseModel getLeaveById(Long leaveID);
 }

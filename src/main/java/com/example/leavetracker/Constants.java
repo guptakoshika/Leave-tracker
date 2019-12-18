@@ -25,5 +25,6 @@ public class Constants {
     public static final String LEAVE_TYPE_PATERNITY = "paternity";
     public static final String LEAVE_APPLY_SUCCESS ="Leave appplied successfully!";
     public static final String LEAVE_APPLY_FAILED = "leave applying failed!";
+    public static final String LEAVES_FOR_EMP_ID ="Leaves for Employess are:";
 
 }

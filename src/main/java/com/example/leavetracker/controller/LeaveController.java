@@ -25,7 +25,7 @@ public class LeaveController {
     @GetMapping(value = "/{empId}")
     public ResponseEntity<ResponseModel> getLeavesByEmpId(@PathVariable Long empId) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, leaveService.getLeave(empId), null)), HttpStatus.OK);
+            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVES_FOR_EMP_ID, leaveService.getLeave(empId), null)), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
         }

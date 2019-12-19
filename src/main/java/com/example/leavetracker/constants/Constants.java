@@ -1,4 +1,4 @@
-package com.example.leavetracker;
+package com.example.leavetracker.constants;
 
 public class Constants {
 

@@ -1,6 +1,6 @@
 package com.example.leavetracker.services;
 
-import com.example.leavetracker.Constants;
+import com.example.leavetracker.constants.Constants;
 import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.CommonErrorResonse;

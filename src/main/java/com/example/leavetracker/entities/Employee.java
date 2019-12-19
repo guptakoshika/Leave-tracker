@@ -31,7 +31,7 @@ public class Employee implements Serializable {
     @NotNull(message = "employee joining date cannot be null")
     private Date joiningDate;
 
-    @Column(name = "email_address", nullable = false , unique = true)
+    @Column(name = "email_address", nullable = false, unique = true)
     private String email;
 
     private Long leaveBalance;

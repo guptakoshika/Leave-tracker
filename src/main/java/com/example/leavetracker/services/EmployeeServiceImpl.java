@@ -2,20 +2,16 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.Constants;
 import com.example.leavetracker.entities.Employee;
-import com.example.leavetracker.enums.Gender;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.CommonErrorResonse;
-import com.example.leavetracker.models.response.EmployeeResponseModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.repository.EmployeeRepository;
 import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.text.ParseException;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -34,25 +30,23 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeRequestModel : Accepts an employee object
      * @returns Response Entity: Returns Http status.
      */
-    public ResponseEntity<ResponseModel> saveEmployee(EmployeeRequestModel employeeRequestModel) {
-        try {
-            log.info("im in save employee method");
-            Employee newEmployee;
-            newEmployee = getNewEmployeeObj(employeeRequestModel);
-            EmployeeResponseModel empData;
-            if (newEmployee != null) {
-                log.info("all validations passed! asving emp into db");
-                employeeRepository.save(newEmployee);
-                empData = new EmployeeResponseModel(newEmployee.getEmployeeId(), newEmployee.getName());
-                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_SUCCESS, Constants.EMP_ADD_SUCCESS, empData, null), HttpStatus.OK);
-            } else {
-                log.info("validation failed ! ");
-                return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
-            }
-        } catch (Exception ex) {
-            log.info("Exception in saving Employee" + ex.getMessage());
-            return new ResponseEntity<ResponseModel>(new ResponseModel(Constants.STATUS_FAILED, Constants.EMP_ADD_FAILED, null, null), HttpStatus.BAD_REQUEST);
+    public ResponseModel saveEmployee(EmployeeRequestModel employeeRequestModel) {
+        ResponseModel resp = new ResponseModel();
+        CommonErrorResonse validation = isValidEmployeeRequest(employeeRequestModel);
+        if (validation.isValid()) {
+            Employee emp = new Employee();
+            emp.setName(employeeRequestModel.getName());
+            emp.setEmail(employeeRequestModel.getEmail());
+            emp.setJoiningDate(Util.gateDateFromString(employeeRequestModel.getJoiningDate()));
+            emp.setLeaveBalance(12L);
+            employeeRepository.save(emp);
+            resp.setStatus(Constants.STATUS_SUCCESS);
+            resp.setMessage(Constants.EMP_ADD_SUCCESS);
+        } else {
+            resp.setStatus(Constants.STATUS_FAILED);
+            resp.setMessage(Constants.EMP_ADD_FAILED);
         }
+        return resp;
     }
 
     /***
@@ -60,29 +54,36 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param empId: Accepts an employee id.
      * @returns Optional<Employee> : Returns if an employee if found else throw exception
      */
-    public ResponseEntity fetchEmployee(Long empId) throws Exception {
+    public ResponseModel fetchEmployee(Long empId) throws Exception {
+        ResponseModel resp = new ResponseModel();
         try {
-            if (employeeRepository.existsById(empId))
-                return new ResponseEntity(employeeRepository.findById(empId), HttpStatus.OK);
-            else
-                throw new Exception("employee not found");
-
+            Optional<Employee> emp = employeeRepository.findById(empId);
+            if (emp.isPresent()){
+                resp.setData(emp.get());
+                resp.setStatus(Constants.STATUS_SUCCESS);
+                resp.setMessage(Constants.EMP_ADD_FAILED);
+            }
+            else{
+                resp.setStatus(Constants.STATUS_FAILED);
+                resp.setMessage(Constants.EMP_ADD_FAILED);
+            }
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ResponseEntity(new ResponseModel(), HttpStatus.NOT_FOUND);
         }
+        return resp;
     }
 
     /***
      * This method is used to fetch all the employes.
      * @returns list of the employess.
      */
-    public ResponseEntity getAllEmployees() {
+    public ResponseModel getAllEmployees() {
+        ResponseModel resp = new ResponseModel();
         try {
-            return new ResponseEntity(employeeRepository.findAll(), HttpStatus.OK);
+            return new ResponseModel(Constants.STATUS_SUCCESS , null ,  employeeRepository.findAll(), null );
         } catch (Exception e) {
-            log.info("expection occured in gettign all employees" + e);
-            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+            log.error("exception occurred in gettign all employees" + e);
+            return new ResponseModel(Constants.STATUS_SUCCESS , null ,  null, null );
         }
     }
 
@@ -91,59 +92,46 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param  empId : employee id which has to be removed.
      * @returns deleted employee object.
      */
-    public HttpStatus deleteEmployee(Long empId) {
+    public ResponseModel deleteEmployee(Long empId) {
         try {
             if (employeeRepository.existsById(empId)) {
                 employeeRepository.deleteById(empId);
-                return HttpStatus.OK;
+                return new ResponseModel();
             } else
                 throw new Exception("employee doesn't exists");
         } catch (Exception e) {
-            log.info(e.getMessage());
-            return HttpStatus.BAD_REQUEST;
+            log.error(e.getMessage());
+            return new ResponseModel();
         }
     }
 
-    private Employee getNewEmployeeObj(EmployeeRequestModel employeeRequestModel) throws ParseException {
-        CommonErrorResonse resp = isValidReuest(new CommonErrorResonse(), employeeRequestModel);
-        if (resp.isValid()) {
-            resp.getEmployee().setLeaveBalance(12L);
-            return resp.getEmployee();
-        }
-        return null;
-    }
-
-    private CommonErrorResonse isValidReuest(CommonErrorResonse createEmployee, EmployeeRequestModel employeeRequestModel) throws ParseException {
-        log.info("is valid request is called");
-        Employee employee = new Employee();
+    private CommonErrorResonse isValidEmployeeRequest(EmployeeRequestModel employeeRequestModel) {
+        log.debug("is valid request is called");
+        CommonErrorResonse validEmp = new CommonErrorResonse();
+        validEmp.setValid(true);
         if (employeeRequestModel != null) {
             if (employeeRequestModel.getName() == null || employeeRequestModel.getName().isEmpty()) {
-                createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
-                return createEmployee;
+                validEmp.setValid(false);
+                return validEmp;
             }
             if (employeeRequestModel.getEmail() == null || !employeeRequestModel.getEmail().isEmpty()) {
-                createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
-                return createEmployee;
+                validEmp.setValid(false);
+                return validEmp;
             }
-            if (employeeRequestModel.getGender() == null || employeeRequestModel.getGender().isEmpty()) {
-                createEmployee.setEmployee(null);
-                createEmployee.setValid(true);
-                return createEmployee;
+            if (employeeRequestModel.getGender() == null ){
+                validEmp.setValid(false);
+                return validEmp;
             }
-            if(employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()){
-                createEmployee.setValid(false);
-                createEmployee.setEmployee(null);
-                return createEmployee;
-            }else{
+            if (employeeRequestModel.getJoiningDate() == null || employeeRequestModel.getJoiningDate().isEmpty()) {
+                validEmp.setValid(false);
+                return validEmp;
+            } else {
                 Date date = Util.gateDateFromString(employeeRequestModel.getJoiningDate());
-                if(!Util.isValidDate(date));
-                createEmployee.setEmployee(null);
-                createEmployee.setValid(false);
-                return createEmployee;
+                if (!Util.isValidDate(date)) ;
+                validEmp.setValid(false);
+                return validEmp;
             }
         }
-        return createEmployee;
+        return validEmp;
     }
 }

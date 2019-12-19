@@ -9,8 +9,4 @@ public class CommonErrorResonse {
     boolean valid;
     Employee employee;
     Leave Leave;
-
-    public boolean isValid(){
-        return valid;
-    }
 }

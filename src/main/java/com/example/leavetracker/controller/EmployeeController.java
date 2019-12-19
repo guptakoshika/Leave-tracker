@@ -22,6 +22,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @GetMapping(value = "/login")
+    public ResponseEntity<ResponseModel> logiin() {
+        return new ResponseEntity<>(employeeService.login(),HttpStatus.OK);
+    }
+
     @GetMapping(value = "")
     public ResponseEntity<ResponseModel> getAllEmployees() {
         return new ResponseEntity<>(employeeService.getAllEmployees(),HttpStatus.OK);

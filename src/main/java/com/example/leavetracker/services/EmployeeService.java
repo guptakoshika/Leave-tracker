@@ -2,8 +2,6 @@ package com.example.leavetracker.services;
 
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 public interface EmployeeService {
 
@@ -33,4 +31,6 @@ public interface EmployeeService {
      * @returns deleted employee object.
      */
     ResponseModel deleteEmployee(Long empId);
+
+    ResponseModel login();
 }

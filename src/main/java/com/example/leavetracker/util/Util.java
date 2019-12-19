@@ -14,8 +14,8 @@ public class Util {
      * @param date is of type String
      * @return date is object of type date.
      */
-    public static Date gateDateFromString(String date) throws ParseException {
-        Date resDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
+    public static Date gateDateFromString(String date)  {
+        //Date resDate = new SimpleDateFormat(Constants.DATE_FORMAT).parse(date);
         return null;
     }
 

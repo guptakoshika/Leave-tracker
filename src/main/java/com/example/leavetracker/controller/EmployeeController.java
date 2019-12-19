@@ -25,33 +25,33 @@ public class EmployeeController {
 
     @GetMapping(value = "")
     public ResponseEntity<ResponseModel> getAllEmployees() {
-        return employeeService.getAllEmployees();
+        return new ResponseEntity<>(employeeService.getAllEmployees(),HttpStatus.OK);
     }
 
     @GetMapping(value = "/{empId}", produces = "application/JSON")
     public ResponseEntity<ResponseModel> fetchEmployee(@PathVariable Long empId) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.getAllEmployees(), null)), HttpStatus.OK);
+            return new ResponseEntity<>(employeeService.getAllEmployees() , HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(value = "")
     public ResponseEntity<ResponseModel> employee(@Valid @RequestBody EmployeeRequestModel employeeRequestModel) {
         try {
-            return employeeService.saveEmployee(employeeRequestModel);
+            return new ResponseEntity<>(employeeService.saveEmployee(employeeRequestModel),HttpStatus.CREATED);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<ResponseModel> deleteEmployee(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_SUCCESS, null, employeeService.deleteEmployee(id), null)), HttpStatus.OK);
+            return new ResponseEntity<ResponseModel>(employeeService.deleteEmployee(id), HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>((new ResponseModel(Constants.STATUS_FAILED, null, null, null)), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

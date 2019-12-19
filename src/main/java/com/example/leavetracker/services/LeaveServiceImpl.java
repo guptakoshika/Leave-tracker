@@ -45,7 +45,8 @@ public class LeaveServiceImpl implements LeaveService {
             Leave leave = getLeave(leaveRequestModel);
             LeaveResponseModel leaveResponseModel;
             leaveRepository.save(leave);
-            leaveResponseModel = new LeaveResponseModel(leave.getStatus());
+            leaveResponseModel = new LeaveResponseModel();
+            leaveResponseModel.setStatus(leave.getStatus());
             log.debug("leave saved successfully!");
             return new ResponseModel(Constants.STATUS_SUCCESS, Constants.LEAVE_APPLY_SUCCESS, leaveResponseModel, null);
         } catch (Exception e) {

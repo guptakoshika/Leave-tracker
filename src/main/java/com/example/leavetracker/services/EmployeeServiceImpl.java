@@ -1,6 +1,6 @@
 package com.example.leavetracker.services;
 
-import com.example.leavetracker.Constants;
+import com.example.leavetracker.constants.Constants;
 import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.CommonErrorResonse;
@@ -58,12 +58,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         ResponseModel resp = new ResponseModel();
         try {
             Optional<Employee> emp = employeeRepository.findById(empId);
-            if (emp.isPresent()){
+            if (emp.isPresent()) {
                 resp.setData(emp.get());
                 resp.setStatus(Constants.STATUS_SUCCESS);
                 resp.setMessage(Constants.EMP_ADD_FAILED);
-            }
-            else{
+            } else {
                 resp.setStatus(Constants.STATUS_FAILED);
                 resp.setMessage(Constants.EMP_ADD_FAILED);
             }
@@ -80,10 +79,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ResponseModel getAllEmployees() {
         ResponseModel resp = new ResponseModel();
         try {
-            return new ResponseModel(Constants.STATUS_SUCCESS , null ,  employeeRepository.findAll(), null );
+            return new ResponseModel(Constants.STATUS_SUCCESS, null, employeeRepository.findAll(), null);
         } catch (Exception e) {
             log.error("exception occurred in gettign all employees" + e);
-            return new ResponseModel(Constants.STATUS_SUCCESS , null ,  null, null );
+            return new ResponseModel(Constants.STATUS_SUCCESS, null, null, null);
         }
     }
 
@@ -118,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 validEmp.setValid(false);
                 return validEmp;
             }
-            if (employeeRequestModel.getGender() == null ){
+            if (employeeRequestModel.getGender() == null) {
                 validEmp.setValid(false);
                 return validEmp;
             }

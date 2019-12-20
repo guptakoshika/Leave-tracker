@@ -1,6 +1,6 @@
 package com.example.leavetracker.services;
 
-import com.example.leavetracker.Constants;
+import com.example.leavetracker.constants.Constants;
 import com.example.leavetracker.entities.Employee;
 import com.example.leavetracker.entities.Leave;
 import com.example.leavetracker.enums.LeaveStatus;
@@ -14,9 +14,7 @@ import com.example.leavetracker.util.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,10 +63,10 @@ public class LeaveServiceImpl implements LeaveService {
         ResponseModel resp = new ResponseModel();
         try {
             if (empId != null) {
-                List<Leave> leaves = leaveRepository.getLeaveByEmpId(empId);
+                //List<Leave> leaves = leaveRepository.getLeaveByEmpId(empId);
                 resp.setStatus(Constants.STATUS_SUCCESS);
                 resp.setMessage(Constants.LEAVES_FOR_EMP_ID);
-                resp.setData(leaves);
+                resp.setData(null);
             } else {
                 resp.setStatus(Constants.STATUS_FAILED);
                 resp.setMessage(Constants.EMP_ID_MANDATORY);

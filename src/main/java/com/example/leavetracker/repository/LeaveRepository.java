@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface LeaveRepository extends JpaRepository<Leave, Long> {
 
-    @Query("select * from Leave l where l.employee.id = ?1")
-    List<Leave> getLeaveByEmpId(Long empId);
+ //   @Query("select l from Leave l where l.employee.id = ?1")
+//    List<Leave> getLeaveByEmpId(Long empId);
 }

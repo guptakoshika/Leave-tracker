@@ -1,6 +1,12 @@
-package com.example.leavetracker;
+package com.example.leavetracker.constants;
 
 public class Constants {
+
+    //security constants
+    public final static Long EXCEPTION_TIME = 864000000L;
+    public static final String HEADER_STRING = "authorization";
+    public static final String ADD_EMP_URL = "/api/employee";
+    public static final String TOKEN_SECRET = "jf9i4jgu83nflo";
 
     //generic
     public static final String STATUS_SUCCESS = "Success";
@@ -23,8 +29,8 @@ public class Constants {
     public static final String LEAVE_TYPE_SABBATICAL = "SABATICAL";
     public static final String LEAVE_TYPE_MATERNITY = "maternity";
     public static final String LEAVE_TYPE_PATERNITY = "paternity";
-    public static final String LEAVE_APPLY_SUCCESS ="Leave appplied successfully!";
+    public static final String LEAVE_APPLY_SUCCESS = "Leave appplied successfully!";
     public static final String LEAVE_APPLY_FAILED = "leave applying failed!";
-    public static final String LEAVES_FOR_EMP_ID ="Leaves for Employess are:";
+    public static final String LEAVES_FOR_EMP_ID = "Leaves for Employess are:";
 
 }

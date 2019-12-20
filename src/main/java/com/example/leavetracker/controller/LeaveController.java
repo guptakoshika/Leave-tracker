@@ -1,6 +1,5 @@
 package com.example.leavetracker.controller;
 
-import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.LeaveRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.LeaveService;

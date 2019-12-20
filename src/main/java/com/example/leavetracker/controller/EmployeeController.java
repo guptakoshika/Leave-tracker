@@ -1,6 +1,5 @@
 package com.example.leavetracker.controller;
 
-import com.example.leavetracker.Constants;
 import com.example.leavetracker.models.request.EmployeeRequestModel;
 import com.example.leavetracker.models.response.ResponseModel;
 import com.example.leavetracker.services.EmployeeService;
@@ -22,6 +21,11 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @GetMapping(value = "/login")
+    public ResponseEntity<ResponseModel> logiin() {
+        return new ResponseEntity<>(employeeService.login(),HttpStatus.OK);
+    }
 
     @GetMapping(value = "")
     public ResponseEntity<ResponseModel> getAllEmployees() {

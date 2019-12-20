@@ -12,4 +12,6 @@ public class LeaveResponseModel {
 
     private LeaveStatus status;
 
+    private Long EmpId;
+
 }
